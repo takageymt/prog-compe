@@ -4,22 +4,22 @@ my library for competitive programming.
 
 Index
 ===
-Template
-DataStructure
+### Template
+### DataStructure
 - Segment Tree
 - Binary Indexed Tree
 - Union Find
-Geometry
-Math
+### Geometry
+### Math
 - Number Theory
 - Prime Factorization
-DynamicProgramming
+### DynamicProgramming
 - Longest Common Subsequence
 - Levenshtein Distance
-Tree
+### Tree
 - Biconnected Components
 - Doubling; least common ancestor
-Graph
+### Graph
 - Dijkstra; single-source shortest paths
 - Dinic; maximum flow
 - Bipartite Matching
@@ -28,5 +28,5 @@ Graph
 - Prim; spannning tree
 - Strongly Connected Components
 - Warshall Floyd; all-pairs shortest paths
-String
+### String
 - Rolling Hash
