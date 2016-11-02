@@ -34,7 +34,7 @@ Index
 - Dijkstra; single-source shortest paths
 - Dinic; maximum flow
 - Bipartite Matching
-- Primal Dual; minimum cost flow
+- Primal Dual(successive shortest paths); minimum cost flow;
 - Kruskal; spanning tree
 - Prim; spannning tree
 - Strongly Connected Components
