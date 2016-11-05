@@ -7,7 +7,7 @@ struct BellmanFord
 {
   vector<edge> edges;
   vector<int> distance;
-  BellmanFord(int V, int E):edges(E), distance(V, inf){};
+  BellmanFord(int V, int E):edges(E), distance(V, inf){}
   void add_edge(int from, int to, int weight)
   {
     edges.push_back(edge(from, to, weight));
