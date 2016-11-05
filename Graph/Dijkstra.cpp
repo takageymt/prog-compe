@@ -1,33 +1,35 @@
+// Dijkstra's algorithm with a heap: Single-source shoretest paths
 struct edge
 {
-  int to, cost;
+  int to, weight;
   edge(){}
-  edge(int to, int cost):to(to), cost(cost){}
+  edge(int to, int weight):to(to), weight(weight){}
 };
 
 struct Dijkstra
 {
-  vector< vector<edge> > G;
-  vector<int> mincost;
-  Dijkstra(int sz):G(sz), mincost(sz, inf){}
-  void add_edge(int f, int t, int cost, bool bi = false)
+  vector< vector<edge> > graph;
+  vector<int> distance;
+  Dijkstra(int sz):graph(sz), distance(sz, inf){}
+  void add_edge(int from, int to, int weight, bool is_bidirect = false)
   {
-    G[f].push_back(edge(t, cost));
-    if(bi) G[t].push_back(edge(f, cost));
+    G[from].push_back(edge(to, weight));
+    if(is_bidirect) G[to].push_back(edge(from, weight));
   }
-  int shortest_path(int s, int t)
+  int shortest_path(int source, int destination)
   {
     priority_queue<Pi, vector<Pi>, greater<Pi> > que;
-    que.push_back(Pi(0, s));
-    mincost[s] = 0;
+    que.push_back(Pi(0, source));
+    distance[source] = 0;
     while(!que.empty()) {
-      int u = que.top().second, cost = que.top().first;
-      if(u == t) return cost;
-      if(mincost[u] < cost) continue;
-      for(edge e : G[u]) {
-	if(cost + e.cost < mincost[e.to]) {
-	  mincost[e.to] = cost + e.cost;
-	  que.push(Pi(mincost[e.to], e.to));
+      Pi p = que.top(); que.pop();
+      int v = p.second;
+      if(v == destination) return cost;
+      if(distance[v] < p.first) continue;
+      for(edge e : G[v]) {
+	if(distance[v] + e.weight < distance[e.to]) {
+	  distance[e.to] = distance[v] + e.weight;
+	  que.push(Pi(distance[e.to], e.to));
 	}
       }
     }
