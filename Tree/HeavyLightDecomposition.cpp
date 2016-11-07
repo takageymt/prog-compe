@@ -64,15 +64,15 @@ struct HLDecomposition
     }
   }
   // k-th upper ancestor
-  int kth_up(int u, int d)
+  int kth_up(int u, int k)
   {
     while(1) {
-      if(depth[head[u]] > depth[u] - d) {
-	d -= depth[u] - depth[head[u]] + 1;
+      if(depth[head[u]] > depth[u] - k) {
+	k -= depth[u] - depth[head[u]] + 1;
 	if(head[u] == 0) return 0;
 	u = parent[head[u]];
       } else {
-	return inv[vid[u] - d];
+	return inv[vid[u] - k];
       }
     }
   }

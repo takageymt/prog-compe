@@ -43,7 +43,7 @@ struct BICC
   void compose()
   {
     int k = 0;
-    dfs(i, -1, k);
+    dfs(0, -1, k);
 
     int num = 0;
     vector<int> conn(graph.size());
@@ -58,8 +58,8 @@ struct BICC
     for(auto e : edges) {
       int x = cmp[e.first], y = cmp[e.second];
       if(x == y) continue;
-      tree.emplace_back(x);
-      tree.emplace_back(y);
+      tree[x].emplace_back(y);
+      tree[y].emplace_back(x);
     }
   }
 };
