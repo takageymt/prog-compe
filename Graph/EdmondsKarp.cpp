@@ -2,20 +2,20 @@
 // TBE
 struct edge
 {
-  int from, to, capacity, flow;
+  int to, capacity, flow;
   edge(){}
-  edge(int from, int to, int capacity, int flow, int rev):from(from), to(to), capacity(capacity), flow(flow), rev(rev){}
+  edge(int to, int capacity, int flow, int rev):to(to), capacity(capacity), flow(flow), rev(rev){}
 };
 
 struct EdmondsKarp
 {
   vector< vector<edge> > graph;
-  vector<edge> pred;
-  EdmondsKarp(int sz):graph(sz), pred(sz, edge(-1, -1, -1, -1, -1)){}
+  vector<int> prevv, preve;
+  EdmondsKarp(int sz):graph(sz), prevv(sz, -1), preve(sz, -1){}
   void add_edge(int from, int to, int capacity)
   {
-    graph[from].push_back(edge(from, to, capacity, 0, (int)graph[to].size()));
-    graph[to].push_back(edge(to, from, capacity, capacity, (int)graph[from].size()-1));
+    graph[from].push_back(edge(to, capacity, 0, (int)graph[to].size()));
+    graph[to].push_back(edge(from, capacity, capacity, (int)graph[from].size()-1));
   }
   int max_flow(int source, int sink)
   {
@@ -25,9 +25,9 @@ struct EdmondsKarp
       que.push(source);
       while(!que.empty()) {
 	int u = que.front(); que.pop();
-	for(edge e : graph[u]) {
-	  if(pred[e.to] == -1 && e.to != source && e.capacity > e.flow) {
-	    pred[e.to] = e;
+	for(int i = 0; i < (int)graph[u].size(); i++) {
+	  if(prevv[e.to] == -1 && e.to != source && e.capacity > e.flow) {
+	    prevv[e.to] = u; preve[e.to] = i;
 	    que.push(e.to);
 	  }
 	}
@@ -35,12 +35,14 @@ struct EdmondsKarp
       if(pred[sink] == -1) break;
 
       int df = inf;
-      for(edge e = pred[sink]; e.to != -1; e = pred[e.from]) {
-	df = min(df, e.cap - e.flow);
+      for(int v = sink; v != source; v = prevv[v]) {
+	edge e = graph[prevv[v]][preve[v]];
+	df = min(df, e.capacity - e.flow);
       }
-      for(edge e = pred[sink]; e.to != -1; e = pred[e.from]) {
+      for(int v = sink; v != source; v = prevv[v]) {
+	edge& e = graph[prevv[v]][preve[v]];
 	e.flow += df;
-	graph[e.from][e.rev].flow -= df;
+	graph[v][e.rev].flow -= df;
       }
       flow += df;
     }
