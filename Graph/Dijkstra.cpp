@@ -13,20 +13,20 @@ struct Dijkstra
   Dijkstra(int sz):graph(sz), distance(sz, inf){}
   void add_edge(int from, int to, int weight, bool is_bidirect = false)
   {
-    G[from].push_back(edge(to, weight));
-    if(is_bidirect) G[to].push_back(edge(from, weight));
+    graph[from].push_back(edge(to, weight));
+    if(is_bidirect) graph[to].push_back(edge(from, weight));
   }
-  int shortest_path(int source, int destination)
+  int shortest_path(int source, int destination = -1)
   {
     priority_queue<Pi, vector<Pi>, greater<Pi> > que;
-    que.push_back(Pi(0, source));
+    que.push(Pi(0, source));
     distance[source] = 0;
     while(!que.empty()) {
       Pi p = que.top(); que.pop();
       int v = p.second;
-      if(v == destination) return cost;
+      if(v == destination) return p.first;
       if(distance[v] < p.first) continue;
-      for(edge e : G[v]) {
+      for(edge e : graph[v]) {
 	if(distance[v] + e.weight < distance[e.to]) {
 	  distance[e.to] = distance[v] + e.weight;
 	  que.push(Pi(distance[e.to], e.to));

@@ -1,3 +1,32 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <map>
+#include <queue>
+ 
+using namespace std;
+ 
+using ll = long long;
+using Pi = pair<int, int>;
+using Pl = pair<ll, ll>;
+using Ti = tuple<int, int, int>;
+using Tl = tuple<ll, ll, ll>;
+ 
+#define pb push_back
+#define eb emplace_back
+#define mp make_pair
+#define mt make_tuple
+#define F first
+#define S second
+#define Get(t, i) get<(i)>((t))
+#define all(v) (v).begin(), (v).end()
+#define rep(i, n) for(int i = 0; i < (int)(n); i++)
+#define reps(i, f, n) for(int i = (int)(f); i < (int)(n); i++)
+#define each(a, b) for(auto a : b)
+ 
+const int inf = 1 << 25;
+const ll INF = 1LL << 55;
+
 // Bellman-Ford algorithm: Single-source shoretest paths
 struct edge {
   int from, to, weight;
@@ -39,3 +68,19 @@ struct BellmanFord
     return false;
   }
 };
+
+int main()
+{
+  int V, E, r; cin >> V >> E >> r;
+  BellmanFord sssp(V);
+  while(E--) {
+    int s, t, d; cin >> s >> t >> d;
+    sssp.add_edge(s, t, d);
+  }
+  sssp.shortest_path(r);
+  for(int i = 0; i < V; i++) {
+    if(sssp.distance[i] == inf) puts("INF");
+    else cout << sssp.distance[i] << endl;
+  }
+  return 0;
+}
