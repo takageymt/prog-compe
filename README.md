@@ -9,6 +9,8 @@ Index
 ### DataStructure
 
 - Segment Tree
+- Lazy-evaluated Segment Tree
+- Sttary Sky Tree
 - Binary Indexed Tree
 - Union Find
 
@@ -26,20 +28,28 @@ Index
 
 ### Tree
 
-- Biconnected Components
+- Diameter
 - Doubling: least common ancestor
+- Centroid Decomposition
+- Heavy-Light Decomposition
 
 ### Graph
 
-- Dijkstra: single-source shortest paths
-- Dinic: maximum flow
-- Bipartite Matching
-- Primal Dual(successive shortest paths): minimum cost flow
 - Kruskal: spanning tree
 - Prim: spannning tree
+- Bellman-Ford: single-source shortest paths
+- Dijkstra: single-source shortest paths
+- Warshall-Floyd: all-pairs shortest paths
+- Ford-Fulkerson: maximum flow
+- EdmondsKarp: maximum flow
+- Dinic: maximum flow
+- Bipartite Matching: (maximum flow)
+- Primal Dual(successive shortest paths): minimum cost flow
+- Biconnected Components
 - Strongly Connected Components
-- Warshall Floyd: all-pairs shortest paths
+- Topological Sort
 
 ### String
 
 - Rolling Hash
+- Trie Tree
