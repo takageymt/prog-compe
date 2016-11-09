@@ -7,7 +7,7 @@ struct SegmentTree
   {
     sz = 1;
     while(sz < n) sz *= 2;
-    data.resize(2*sz, 0);
+    data.resize(2*sz-1, 0);
   }
   void update(int k, int x)
   {
