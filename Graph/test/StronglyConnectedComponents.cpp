@@ -1,3 +1,29 @@
+// GRL_3_C: Connected Components - Strongly Connected Components
+#include <bits/stdc++.h>
+
+using namespace std;
+
+using ll = long long;
+using Pi = pair<int, int>;
+using Pl = pair<ll, ll>;
+using Ti = tuple<int, int, int>;
+using Tl = tuple<ll, ll, ll>;
+
+#define pb push_back
+#define eb emplace_back
+#define mp make_pair
+#define mt make_tuple
+#define F first
+#define S second
+#define Get(t, i) get<(i)>((t))
+#define all(v) (v).begin(), (v).end()
+#define rep(i, n) for(int i = 0; i < (int)(n); i++)
+#define reps(i, f, n) for(int i = (int)(f); i < (int)(n); i++)
+#define each(a, b) for(auto& a : b)
+
+const int inf = 1 << 25;
+const ll INF = 1LL << 55;
+
 typedef vector< vector<int> > Graph;
 
 void dfs(int idx, Graph& graph, vector<bool>& used, vector<int>& order)
@@ -38,4 +64,26 @@ int StronglyConnectedComponents(Graph& graph, vector<int>& cmp)
     if(cmp[order[i]] == -1) rdfs(order[i], rgraph, cmp, cnt), cnt++;
   }
   return cnt;
+}
+
+
+int main()
+{
+  int V, E; cin >> V >> E;
+  Graph graph(V);
+  while(E--) {
+    int s, t;
+    cin >> s >> t;
+    graph[s].push_back(t);
+  }
+  vector<int> cmp;
+  StronglyConnectedComponents(graph, cmp);
+  int Q; cin >> Q;
+  while(Q--) {
+    int u, v;
+    cin >> u >> v;
+    if(cmp[u] == cmp[v]) puts("1");
+    else puts("0");
+  }
+  return 0;
 }

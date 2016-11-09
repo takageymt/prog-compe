@@ -1,33 +1,33 @@
 struct edge{
-  int to, cost;
+  int to, weight;
   edge(){}
-  edge(int to, int cost):to(to), cost(cost){}
+  edge(int to, int weight):to(to), weight(weight){}
 };
 
 struct Prim
 {
-  vector< vector<edge> > G;
-  Prim(int sz):G(sz){}
-  void add_edge(int u, int v, int cost)
+  vector< vector<edge> > graph;
+  Prim(int sz):graph(sz){}
+  void add_edge(int u, int v, int weight)
   {
-    G[u].push_back(edge(v, cost));
-    G[v].push_back(edge(u, cost));
+    graph[u].push_back(edge(v, weight));
+    graph[v].push_back(edge(u, weight));
   }
   int build()
   {
     int total = 0;
-    vector<bool> used(G.size(), false);
-    priority_queue< P, vector<P>, greater<P> > que;
-    que.push(P(0, 0));
-    while(!que.empty()){
-      P p = que.top(); que.pop();
-      int now = p.second, cost = p.first;
-      if(used[now]) continue;
-      used[now] = true;
-      total += cost;
-      for(int i = 0; i < G[now].size(); i++){
-	edge& e = G[now][i];
-	que.push(P(e.cost, e.to));
+    vector<bool> used(graph.size(), false);
+    priority_queue< Pi, vector<Pi>, greater<Pi> > que;
+    que.push(Pi(0, 0));
+    while(!que.empty()) {
+      Pi p = que.top(); que.pop();
+      int curr = p.second, weight = p.first;
+      if(used[curr]) continue;
+      used[curr] = true;
+      total += weight;
+      for(int i = 0; i < graph[curr].size(); i++){
+	edge& e = graph[curr][i];
+	que.push(Pi(e.weight, e.to));
       }
     }
     return total;

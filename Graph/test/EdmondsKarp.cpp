@@ -1,3 +1,28 @@
+// AOJ GRL_6_A: Network Flow - Maximum Flow
+#include <bits/stdc++.h>
+
+using namespace std;
+
+using ll = long long;
+using Pi = pair<int, int>;
+using Pl = pair<ll, ll>;
+using Ti = tuple<int, int, int>;
+using Tl = tuple<ll, ll, ll>;
+
+#define pb push_back
+#define eb emplace_back
+#define mp make_pair
+#define mt make_tuple
+#define F first
+#define S second
+#define Get(t, i) get<(i)>((t))
+#define all(v) (v).begin(), (v).end()
+#define rep(i, n) for(int i = 0; i < (int)(n); i++)
+#define reps(i, f, n) for(int i = (int)(f); i < (int)(n); i++)
+#define each(a, b) for(auto& a : b)
+
+const int inf = 1 << 25;
+const ll INF = 1LL << 55;
 // Edmonds Karp algorithm: max flow
 // TBE
 struct edge
@@ -52,3 +77,18 @@ struct EdmondsKarp
     return flow;
   }
 };
+
+
+
+int main()
+{
+  int V, E; cin >> V >> E;
+  EdmondsKarp mxf(V);
+  while(E--) {
+    int u, v, c;
+    cin >> u >> v >> c;
+    mxf.add_edge(u, v, c);
+  }
+  cout << mxf.max_flow(0, V-1) << endl;
+  return 0;
+}

@@ -1,9 +1,9 @@
 // Ford-Fulkerson algorithm: maximum flow
 struct edge
 {
-  int to, cap, rev;
+  int to, capacity, rev;
   edge(){}
-  edge(int to, int cap, int rev):to(to), cap(cap), rev(rev){}
+  edge(int to, int capacity, int rev):to(to), capacity(capacity), rev(rev){}
 };
 
 struct FordFulkerson
@@ -11,9 +11,9 @@ struct FordFulkerson
   vector< vector<edge> > graph;
   vector<bool> used;
   FordFulkerson(int V):graph(V), used(V, false){}
-  void add_edge(int from, int to, int cap)
+  void add_edge(int from, int to, int capacity)
   {
-    G[from].push_back(edge(to, cap, (int)graph[to].size()));
+    G[from].push_back(edge(to, capacity, (int)graph[to].size()));
     G[to].push_back(edge(from, 0, (int)graph[from].size()-1));
   }
   int dfs(int v, int sink, int f)
@@ -22,11 +22,11 @@ struct FordFulkerson
     used[v] = true;
     for(int i = 0; i < graph[v].size(); i++) {
       edge& e = graph[v][i];
-      if(!used[e.to] && e.cap > 0) {
-	int d = dfs(e.to, sink, min(f, e.cap));
+      if(!used[e.to] && e.capacity > 0) {
+	int d = dfs(e.to, sink, min(f, e.capacity));
 	if(d > 0) {
-	  e.cap -= d;
-	  graph[e.to][e.rev] += d;
+	  e.capacity -= d;
+	  graph[e.to][e.rev].capacity += d;
 	  return d;
 	}
       }
