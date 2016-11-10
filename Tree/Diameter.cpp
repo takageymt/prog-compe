@@ -8,7 +8,7 @@ using Graph = vector< vector<edge> >;
   
 Pi dfs(const Graph& graph, int cur, int prev)
 {
-  Pi ret = Pi(0, -1);
+  Pi ret = Pi(0, cur);
   for(edge& e : graph[cur]) {
     if(e.to != prev) {
       Pi dist = dfs(graph, e.to, cur);
