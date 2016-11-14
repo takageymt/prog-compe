@@ -29,7 +29,7 @@ Index
 ### Tree
 
 - Diameter
-- Least Common Ancestor(Doubling)
+- Lowest Common Ancestor(Doubling)
 - Centroid Decomposition
 - Heavy-Light Decomposition
 
@@ -44,6 +44,7 @@ Index
 - EdmondsKarp: maximum flow
 - Dinic: maximum flow
 - Bipartite Matching: (maximum flow)
+- Successive Shortest Paths: minimum cost maxmum flow
 - Primal Dual(successive shortest paths): minimum cost maximum flow
 - Biconnected Components
 - Strongly Connected Components
