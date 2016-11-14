@@ -76,7 +76,7 @@ struct HLDecomposition
       }
     }
   }
-  // least common ancestor
+  // lowest common ancestor
   int lca(int u, int v)
   {
     if(vid[u] > vid[v]) swap(u, v);
