@@ -1,12 +1,13 @@
-struct edge
-{
-  int to, capacity, cost, rev;
-  edge(){}
-  edge(int to, int capacity, int cost, int rev):to(to), capacity(capacity), cost(cost), rev(rev){}
-};
-
+// Sccessive Shortest Path(Primal Dual): minimum cost maximum flow
 struct PrimalDual
 {
+  struct edge
+  {
+    int to, capacity, cost, rev;
+    edge(){}
+    edge(int to, int capacity, int cost, int rev):to(to), capacity(capacity), cost(cost), rev(rev){}
+  };
+  
   vector< vector<edge> > graph;
   vector<int> potential, mincost, prevv, preve;
   PrimalDual(int V):graph(V), potential(V), mincost(V), prevv(V), preve(V){}

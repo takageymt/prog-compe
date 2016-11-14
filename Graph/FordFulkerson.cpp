@@ -1,13 +1,13 @@
 // Ford-Fulkerson algorithm: maximum flow
-struct edge
-{
-  int to, capacity, rev;
-  edge(){}
-  edge(int to, int capacity, int rev):to(to), capacity(capacity), rev(rev){}
-};
-
 struct FordFulkerson
 {
+  struct edge
+  {
+    int to, capacity, rev;
+    edge(){}
+    edge(int to, int capacity, int rev):to(to), capacity(capacity), rev(rev){}
+  };
+  
   vector< vector<edge> > graph;
   vector<bool> used;
   FordFulkerson(int V):graph(V), used(V, false){}

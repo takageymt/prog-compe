@@ -1,14 +1,13 @@
 // Edmonds Karp algorithm: max flow
 // TBE
-struct edge
-{
-  int to, capacity, flow, rev;
-  edge(){}
-  edge(int to, int capacity, int flow, int rev):to(to), capacity(capacity), flow(flow), rev(rev){}
-};
-
 struct EdmondsKarp
 {
+  struct edge
+  {
+    int to, capacity, flow, rev;
+    edge(){}
+    edge(int to, int capacity, int flow, int rev):to(to), capacity(capacity), flow(flow), rev(rev){}
+  };
   vector< vector<edge> > graph;
   vector<int> prevv, preve;
   EdmondsKarp(int sz):graph(sz), prevv(sz, -1), preve(sz, -1){}

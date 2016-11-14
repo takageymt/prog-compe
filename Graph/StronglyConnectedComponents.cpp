@@ -1,41 +1,52 @@
-typedef vector< vector<int> > Graph;
-
-void dfs(int idx, Graph& graph, vector<bool>& used, vector<int>& order)
+// Strongly Connected Components
+struct SCC
 {
-  if(used[idx]) return;
-  used[idx] = true;
-  for(int i = 0; i < graph[idx].size(); i++) {
-    dfs(graph[idx][i], graph, used, order);
+  vector< vector<int> > graph, rgraph, tree;
+  vector<Pi> edges;
+  vector<int> order, cmp;
+  vector<bool> used;
+  SCC(int sz):graph(sz), rgraph(sz), cmp(sz, -1), used(sz, false){}
+  SCC(vector< vector<int> > g):graph(g), rgraph(g.size()), cmp(g.size(), -1), used(g.size(), false){}
+  void add_edge(int u, int v)
+  {
+    graph[u].push_back(v);
+    edges.emplace_back(u, v);
   }
-  order.push_back(idx);
-}
-
-void rdfs(int idx, Graph& rgraph, vector<int>& cmp, int& cnt)
-{
-  cmp[idx] = cnt;
-  for(int i = 0; i < rgraph[idx].size(); i++) {
-    if(cmp[rgraph[idx][i]] == -1) rdfs(rgraph[idx][i], rgraph, cmp, cnt);
+  void dfs(int u)
+  {
+    if(used[u]) return;
+    used[u] = true;
+    for(int v : graph[u]) {
+      dfs(v);
+    }
+    order.push_back(u);
   }
-}
-
-int StronglyConnectedComponents(Graph& graph, vector<int>& cmp)
-{
-  int cnt = 0;
-  Graph rgraph(graph.size());
-  for(int i = 0; i < graph.size(); i++) {
-    for(int j = 0; j < graph[i].size(); j++) {
-      rgraph[graph[i][j]].push_back(i);
+  void rdfs(int u, int& cnt)
+  {
+    cmp[u] = cnt;
+    for(int v : rgraph[u]) {
+      if(cmp[v] == -1) rdfs(v, cnt);
     }
   }
-  cmp.resize(graph.size(), -1);
-  vector<bool> used(graph.size(), false);
-  vector<int> order;
-  for(int i = 0; i < graph.size(); i++) {
-    dfs(i, graph, used, order);
+  int compose()
+  {
+    int cnt = 0;
+    for(int u = 0; u < (int)graph.size(); u++) {
+      for(int v : graph[u]) {
+	rgraph[v].push_back(u);
+      }
+    }
+    for(int u = 0; u < (int)graph.size(); u++) dfs(u);
+    reverse(order.begin(), order.end());
+    for(int i = 0; i < (int)order.size(); i++) {
+      if(cmp[order[i]] == -1) rdfs(order[i], cnt), cnt++;
+    }
+    tree.resize(cnt);
+    for(Pi e : edges) {
+      int x = cmp[e.first], y = cmp[e.second];
+      if(x == y) continue;
+      tree[x].push_back(y);
+    }
+    return cnt;
   }
-  reverse(order.begin(), order.end());
-  for(int i = 0; i < order.size(); i++) {
-    if(cmp[order[i]] == -1) rdfs(order[i], rgraph, cmp, cnt), cnt++;
-  }
-  return cnt;
-}
+};

@@ -1,15 +1,14 @@
 // Bellman-Ford algorithm: Single-source shoretest paths
-struct edge {
-  int from, to, weight;
-  edge(){}
-  edge(int from, int to, int weight):from(from), to(to), weight(weight){}
-};
-
 struct BellmanFord
 {
+  struct edge {
+    int from, to, weight;
+    edge(){}
+    edge(int from, int to, int weight):from(from), to(to), weight(weight){}
+  };
   vector<edge> edges;
   vector<int> distance;
-  BellmanFord(int V):distance(V, inf){}
+  BellmanFord(int sz):distance(sz, inf){}
   void add_edge(int from, int to, int weight)
   {
     edges.push_back(edge(from, to, weight));

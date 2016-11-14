@@ -1,14 +1,15 @@
-struct edge{
-  int u, v, weight;
-  edge(){}
-  edge(int u, int v, int weight):u(u), v(v), weight(weight){}
-  bool operator<(const edge& e) const {
-    return weight < e.weight;
-  }
-};
-
+// Kruskal: minimum spanning tree
 struct Kruskal
 {
+  struct edge{
+    int u, v, weight;
+    edge(){}
+    edge(int u, int v, int weight):u(u), v(v), weight(weight){}
+    bool operator<(const edge& e) const {
+      return weight < e.weight;
+    }
+  };
+  
   vector<edge> edges;
   int V;
   Kruskal(int V):V(V){}

@@ -1,13 +1,13 @@
 // Dinic: maximum flow
-struct edge
-{
-  int to, capacity, rev, id, isrev;
-  edge(){}
-  edge(int to, int capacity, int rev):to(to), capacity(capacity), rev(rev){}
-};
-
 struct Dinic
 {
+  struct edge
+  {
+    int to, capacity, rev, id, isrev;
+    edge(){}
+    edge(int to, int capacity, int rev):to(to), capacity(capacity), rev(rev){}
+  };
+  
   vector< vector<edge> > graph;
   vector<int> level, iter;
   Dinic(int sz):graph(sz), level(sz), iter(sz){};

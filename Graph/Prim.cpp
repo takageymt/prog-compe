@@ -1,11 +1,12 @@
-struct edge{
-  int to, weight;
-  edge(){}
-  edge(int to, int weight):to(to), weight(weight){}
-};
-
+// Prim: minimum spanning tree
 struct Prim
 {
+  struct edge{
+    int to, weight;
+    edge(){}
+    edge(int to, int weight):to(to), weight(weight){}
+  };
+  
   vector< vector<edge> > graph;
   Prim(int sz):graph(sz){}
   void add_edge(int u, int v, int weight)
