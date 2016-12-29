@@ -3,8 +3,8 @@
 using namespace std;
 
 #define int long long
-#define F first
-#define S second
+#define FR first
+#define SC second
 #define all(v) (v).begin(), (v).end()
 #define rep(i, n) for(int i = 0; i < (int)(n); i++)
 #define reps(i, f, n) for(int i = (int)(f); i < (int)(n); i++)
