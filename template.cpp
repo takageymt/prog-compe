@@ -6,6 +6,7 @@ using namespace std;
 #define FR first
 #define SC second
 #define all(v) (v).begin(), (v).end()
+#define rall(v) (v).rbegin(), (v).rend()
 #define rep(i, n) for(int i = 0; i < (int)(n); i++)
 #define reps(i, f, n) for(int i = (int)(f); i < (int)(n); i++)
 #define each(a, b) for(auto& a : b)
@@ -13,6 +14,7 @@ using namespace std;
 typedef pair<int, int> P;
 
 const int inf = 1LL << 55;
+const int mod = 1e9 + 7;
 
 signed main()
 {
