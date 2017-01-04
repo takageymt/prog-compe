@@ -1,3 +1,5 @@
+// TBE
+
 // Treap (insert-erase) : 平衡二分探索木
 // Tree + Heap
 // each node has a key and priority (priority is decided randomly).
