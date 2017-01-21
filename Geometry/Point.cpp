@@ -1,12 +1,12 @@
-#define EPS (1e-10)
-#define equals(a, b) (fabs((a)-(b)) < EPS)
-#define lt(a, b) ((a) - (b) < -EPS)
+/*************************
+ * POINT / VECTOR
+ *************************/
 
 // 点/ベクトル
 struct Point {
   double x, y;
   Point(double x = 0.0, double y = 0.0):x(x), y(y){}
-  
+
   Point operator + (Point p) { return Point(x + p.x, y + p.y); }
   Point operator - (Point p) { return Point(x - p.x, y - p.y); }
   Point operator * (double a) { return Point(x * a, y * a); }
@@ -25,53 +25,33 @@ struct Point {
 typedef Point Vector;
 
 // ベクトルのノルム
-double norm(Vector v)
-{
-  return v.x*v.x + v.y*v.y;
-}
+double norm(Vector v);
+
 // ベクトルの大きさ
-double abs(Vector v)
-{
-  return sqrt(norm(v));
-}
+double abs(Vector v);
+
 // ベクトルの内積
-double dot(Vector a, Vector b)
-{
-  return a.x*b.x + a.y*b.y;
-}
+double dot(Vector a, Vector b);
+
 // ベクトルの外積の大きさ
-double cross(Vector a, Vector b)
-{
-  return a.x*b.y - a.y*b.x;
-}
+double cross(Vector a, Vector b);
+
 // 直行判定
-bool isOrthogonal(Vector a, Vector b)
-{
-  return equals(dot(a, b), 0.0);
-}
+bool isOrthogonal(Vector a, Vector b);
+bool isOrthogonal(Point a1, Point a2, Point b1, Point b2);
+
 // 平行判定
-bool isParallel(Vector a, Vector b)
-{
-  return equals(cross(a, b), 0.0);
-}
-static const int COUNTER_CLOCKWISE = 1;
-static const int CLOCKWISE         = -1;
-static const int ONLINE_BACK       = 2;
-static const int ONLINE_FRONT      = -2;
-static const int ON_SEGMENT        = 0;
+bool isParallel(Vector a, Vector b);
+bool isParallel(Point a1, Point a2, Point b1, Point b2);
+
 // 反時計回り
-int ccw(Point p0, Point p1, Point p2)
-{
-  Vector a = p1 - p0;
-  Vector b = p2 - p0;
-  if(cross(a, b) > EPS) return COUNTER_CLOCKWISE;
-  if(cross(a, b) < -EPS) return CLOCKWISE;
-  if(dot(a, b) < -EPS) return ONLINE_BACK;
-  if(a.norm() < b.norm()) return ONLINE_FRONT;
-  return ON_SEGMENT;
-}
+int ccw(Point p0, Point p1, Point p2);
+
+// 交差判定
+bool intersect(Point p1, Point p2, Point p3, Point p4);
+
 // 二点間の距離
-double getDistance(Point a, Point b)
-{
-  return abs(a - b);
-}
+double getDistance(Point a, Point b);
+
+// ∠ABCを求める
+double getAngle(Point a, Point b, Point c);
