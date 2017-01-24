@@ -2,10 +2,6 @@
 #define eq(a, b) (fabs((a)-(b)) < EPS)
 #define lt(a, b) ((a) - (b) < -EPS)
 
-/*************************
- * POINT / VECTOR
- *************************/
-
 struct Point {
   double x, y;
   Point(double x = 0.0, double y = 0.0):x(x), y(y){}
@@ -73,12 +69,6 @@ double getAngle(Point a, Point b, Point c) {
   return min(theta, 360 - theta);
 }
 
-
-
-/*************************
- * SEGMENT / LINE
- *************************/
-
 struct Segment {
   Point p1, p2;
   Segment(Point p1 = Point(), Point p2 = Point()):p1(p1), p2(p2){}
@@ -138,12 +128,6 @@ Line getPerpendicularBisector(Point p1, Point p2) {
   return Line(c, q);
 }
 
-
-
-/*************************
- * Circle
- *************************/
-
 struct Circle {
   Point c;
   double r;
@@ -167,12 +151,6 @@ pair<Point, Point> getCrossPoints(Circle c1, Circle c2) {
   double t = arg(c2.c - c1.c);
   return make_pair(c1.c + polar(c1.r, t + a), c1.c + polar(c1.r, t - a));
 }
-
-
-
-/*************************
- * POLYGON
- *************************/
 
 typedef vector<Point> Polygon;
 
@@ -204,7 +182,7 @@ Polygon convexHull(Polygon ps) {
   Polygon pg(N*2);
 
   sort(ps.begin(), ps.end(), [](Point p1, Point p2) -> bool {
-      return p1.y != p2.y ? lt(p1.y, p2.y) : lt(p1.x, p2.x)});
+      return p1.y != p2.y ? lt(p1.y, p2.y) : lt(p1.x, p2.x); });
   for(int i = 0; i < N; i++, j++) {
     while(j >= 2 && ccw(pg[j-2], pg[j-1], ps[i]) == -1) j--;
     pg[j] = ps[i];
@@ -229,12 +207,6 @@ Polygon convexCut(Polygon s, Line l) {
   }
   return t;
 }
-
-
-
-/*************************
- * SEGMENT ARRANGEMENT
- *************************/
 
 bool mergeIfAble(Segment &s1, Segment s2) {
   if(abs(cross(s1.p2 - s1.p1, s2.p2 - s2.p1)) > EPS) return false;

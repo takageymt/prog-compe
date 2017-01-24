@@ -5,7 +5,7 @@ Polygon convexHull(Polygon ps)
   Polygon pg(N*2);
 
   sort(ps.begin(), ps.end(), [](Point p1, Point p2) -> bool {
-      return p1.y != p2.y ? lt(p1.y, p2.y) : lt(p1.x, p2.x)});
+      return p1.y != p2.y ? lt(p1.y, p2.y) : lt(p1.x, p2.x); });
   for(int i = 0; i < N; i++, j++) {
     while(j >= 2 && ccw(pg[j-2], pg[j-1], ps[i]) == -1) j--;
     pg[j] = ps[i];
