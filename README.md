@@ -8,6 +8,8 @@ Index
 
 ### DataStructure
 
+- Treap (TBE)
+- Randomized Binary Search Tree
 - Segment Tree
 - Lazy-evaluated Segment Tree
 - Sttary Sky Tree
@@ -16,15 +18,35 @@ Index
 
 ### Geometry
 
+- Point / Vector
+- Segment / Line
+- Circle
+- Polygon
+- Convex Hull
+- Convex Cut
+- Polygon-Point Containment
+- Segment Arrangement
+
 ### Math
 
-- Number Theory
+- Binary Search
+- Ternary Search
+- Combination
+- Twelvfold Way
+- Sieve of Eratosthenes
+- Euler-Phi
 - Prime Factorization
+- Matrix
+- Gauss-Jordan elimination
 
 ### DynamicProgramming
 
+- Shortest Common Supersequence
 - Longest Common Subsequence
 - Levenshtein Distance
+- Bell Number
+- Stirling Number
+- Digit DP template
 
 ### Tree
 

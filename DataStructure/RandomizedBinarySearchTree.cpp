@@ -23,6 +23,8 @@ struct node
   node(int v = 0):val(v), cnt(1), lch(nullptr), rch(nullptr), mini(v), maxi(v){}
 };
 
+typedef node* RBST;
+
 inline int count(node* t)
 {
   return (t ? t->cnt : 0);
