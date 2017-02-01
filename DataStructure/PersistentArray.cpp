@@ -19,7 +19,13 @@ public:
 
   int immutable_get(int k)
   {
-    return immutable_get(k, root, 0, h)->value;
+    node *res = immutable_get(k, root, 0, h);
+    return res != nullptr ? res->value : -1;
+  }
+
+  int operator[](int k)
+  {
+    return immutable_get(k);
   }
 
 private:

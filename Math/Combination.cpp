@@ -40,7 +40,7 @@ inline int64 modFact(int n)
   return ret;
 }
 
-inline int64 modCombi(int64 n, int64 r)
+inline int64 modComb(int64 n, int64 r)
 {
   static int64 fact[MAX_N], invfact[MAX_N];
   if(fact == 0) {

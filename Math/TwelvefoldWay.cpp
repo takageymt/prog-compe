@@ -25,7 +25,7 @@ inline int64 count1_1_2(int64 n, int64 m)
   if(n < m) return 0;
   int64 ret = 0;
   for(int i = 1; i <= m; i++) {
-    int64 tmp = modCombi(m, i) * modPow(i, n) % mod;
+    int64 tmp = modComb(m, i) * modPow(i, n) % mod;
     if((m-i) & 1) ret (ret - tmp + mod) % mod;
     else (ret += tmp) %= mod;
   }
@@ -36,14 +36,14 @@ inline int64 count1_1_2(int64 n, int64 m)
 // 重複組合せ
 inline int64 count0_1_0(int64 n, int64 m)
 {
-  return modCombi(n+m-1, m-1);
+  return modComb(n+m-1, m-1);
 }
 
 // ボール:区別無 箱区別有 それぞれの箱に高々1個
 // mCn
 inline int64 count0_1_1(int64 n, int64 m)
 {
-  return modCombi(m, n);
+  return modComb(m, n);
 }
 
 // ボール:区別無 箱区別有 それぞれの箱に最低1個
@@ -51,7 +51,7 @@ inline int64 count0_1_1(int64 n, int64 m)
 // n-1Cm-1
 inline int64 count0_1_2(int64 n, int64 m)
 {
-  return modCombi(n-1, m-1);
+  return modComb(n-1, m-1);
 }
 
 // ボール:区別有 箱区別無 入れ方に制限なし
