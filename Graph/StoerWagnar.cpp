@@ -9,7 +9,7 @@ struct StoerWagner
   }
   int global_min_cut()
   {
-    int ret = inf;
+    int res = inf;
     vector<int> idx((int)graph.size());
     for(int i = 0; i < (int)graph.size(); i++) idx[i] = i;
 
@@ -33,9 +33,9 @@ struct StoerWagner
       idx.erase(idx.begin() + v);
 
       // update min_cut
-      ret = min(ret, cut);
+      res = min(res, cut);
     }
-    
-    return ret;
+
+    return res;
   }
 };

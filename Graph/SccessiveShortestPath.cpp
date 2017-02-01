@@ -14,11 +14,11 @@ struct SSP
   }
   int min_cost_flow(int source, int sink, int f)
   {
-    int ret = 0;
+    int res = 0;
     while(f > 0) {
       vector<int> mincost(graph.size(), inf), prevv(graph.size()), preve(graph.size());
       mincost[source] = 0;
-      
+
       bool update = true;
       while(update) {
 	update = false;
@@ -37,7 +37,7 @@ struct SSP
 	int d = f;
 	for(int v = sink; v != source; v = prevv[v]) d = min(d, graph[prevv[v]][preve[v]].capacity);
 	f -= d;
-	ret += d * mincost[sink];
+	res += d * mincost[sink];
 	for(int v = sink; v != source; v = prevv[v]) {
 	  edge& e = graph[prevv[v]][preve[v]];
 	  e.capacity -= d;
@@ -45,6 +45,6 @@ struct SSP
 	}
       }
     }
-    return ret;
+    return res;
   }
 };

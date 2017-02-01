@@ -9,7 +9,7 @@ struct Kruskal
       return weight < e.weight;
     }
   };
-  
+
   vector<edge> edges;
   int V;
   Kruskal(int V):V(V){}
@@ -21,14 +21,14 @@ struct Kruskal
   {
     sort(edges.begin(), edges.end());
     UnionFind uf(V);
-    int ret = 0;
+    int res = 0;
     for(int i = 0; i < edges.size(); i++){
       edge& e = edges[i];
       if(!uf.same(e.u, e.v)){
 	uf.unite(e.u, e.v);
-	ret += e.weight;
+	res += e.weight;
       }
     }
-    return ret;
+    return res;
   }
 };

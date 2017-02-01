@@ -7,7 +7,7 @@ struct PrimalDual
     edge(){}
     edge(int to, int capacity, int cost, int rev):to(to), capacity(capacity), cost(cost), rev(rev){}
   };
-  
+
   vector< vector<edge> > graph;
   vector<int> potential, mincost, prevv, preve;
   PrimalDual(int V):graph(V), potential(V), mincost(V), prevv(V), preve(V){}
@@ -18,7 +18,7 @@ struct PrimalDual
   }
   int min_cost_flow(int source, int sink, int f)
   {
-    int ret = 0;
+    int res = 0;
     fill(potential.begin(), potential.end(), 0);
     fill(prevv.begin(), prevv.end(), -1);
     fill(preve.begin(), preve.end(), -1);
@@ -48,13 +48,13 @@ struct PrimalDual
       int d = f;
       for(int v = sink; v != source; v = prevv[v]) d = min(d, graph[prevv[v]][preve[v]].capacity);
       f -= d;
-      ret += d * potential[sink];
+      res += d * potential[sink];
       for(int v = sink; v != source; v = prevv[v]) {
 	edge& e = graph[prevv[v]][preve[v]];
 	e.capacity -= d;
 	graph[v][e.rev].capacity += d;
       }
     }
-    return ret;
+    return res;
   }
 };

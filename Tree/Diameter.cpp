@@ -5,18 +5,18 @@ struct edge
 
 using Pi = pair<int, int>;
 using Graph = vector< vector<edge> >;
-  
+
 Pi dfs(const Graph& graph, int cur, int prev)
 {
-  Pi ret = Pi(0, cur);
+  Pi res = Pi(0, cur);
   for(edge& e : graph[cur]) {
     if(e.to != prev) {
       Pi dist = dfs(graph, e.to, cur);
       dist.first += e.weight;
-      ret = max(ret, dist);
+      res = max(res, dist);
     }
   }
-  return ret;
+  return res;
 }
 
 int diameter(const Graph& tree)

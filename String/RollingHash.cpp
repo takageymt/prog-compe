@@ -6,7 +6,7 @@ struct RollingHash
   int_type base, mod[2];
   vector<int_type> hashed[2], power[2];
   RollingHash(){
-    base = 9973LL, mod[0] = 999999937LL, mod[1] = 1000000007LL; 
+    base = 9973LL, mod[0] = 999999937LL, mod[1] = 1000000007LL;
   }
   void init(const string& s)
   {
@@ -25,18 +25,18 @@ struct RollingHash
   }
   hash_type get(int l, int r)
   {
-    hash_type ret(2);
+    hash_type res(2);
     for(int i = 0; i < 2; i++) {
-      ret[i] = ((hashed[i][r] - hashed[i][l] * power[i][r-l]) % mod[i] + mod[i]) % mod[i];
+      res[i] = ((hashed[i][r] - hashed[i][l] * power[i][r-l]) % mod[i] + mod[i]) % mod[i];
     }
-    return ret;
+    return res;
   }
   hash_type concat(hash_type hash1, hash_type hash2, int hash2_len)
   {
-    hash_type ret(2);
+    hash_type res(2);
     for(int i = 0; i < 2; i++) {
-      ret[i] = (hash1[i] * power[i][hash2_len] + hash2[i]) % mod[i];
+      res[i] = (hash1[i] * power[i][hash2_len] + hash2[i]) % mod[i];
     }
-    return ret;
+    return res;
   }
 };
