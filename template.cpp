@@ -9,6 +9,13 @@ using namespace std;
 #define min(...) min({__VA_ARGS__})
 #define max(...) max({__VA_ARGS__})
 
+template<class T1, class T2> void chmin(T1 &a, T2 b){if(a>b)a=b;}
+template<class T1, class T2> void chmax(T1 &a, T2 b){if(a<b)a=b;}
+
+using pint = pair<int, int>;
+using tint = tuple<int, int, int>;
+using vint = vector<int>;
+
 const int inf = 1LL << 55;
 const int mod = 1e9 + 7;
 

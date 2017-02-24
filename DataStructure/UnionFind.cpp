@@ -1,10 +1,11 @@
 struct UnionFind
 {
   vector<int> data;
+  UnionFind(){}
   UnionFind(int sz):data(sz, -1){};
-  int size(int x) { return -data[find(x)]; }  
+  int size(int x) { return -data[find(x)]; }
   int find(int x) { return data[x] < 0 ? x : data[x] = find(data[x]); }
-  bool same(int x, int y) { return find(x) == find(y); }  
+  bool same(int x, int y) { return find(x) == find(y); }
   int unite(int x, int y)
   {
     x = find(x), y = find(y);

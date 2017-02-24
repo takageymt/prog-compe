@@ -23,6 +23,7 @@ struct PrimalDual
     fill(prevv.begin(), prevv.end(), -1);
     fill(preve.begin(), preve.end(), -1);
 
+    typedef pair<int, int> Pi;
     while(f > 0) {
       priority_queue<Pi, vector<Pi>, greater<Pi> > que;
       fill(mincost.begin(), mincost.end(), inf);

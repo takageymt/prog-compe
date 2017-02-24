@@ -1,6 +1,7 @@
 #define EPS (1e-10)
 #define eq(a, b) (fabs((a)-(b)) < EPS)
 #define lt(a, b) ((a) - (b) < -EPS)
+#define le(a, b) (eq(a, b) || lt(a, b))
 
 struct Point {
   double x, y;
@@ -68,6 +69,12 @@ double getAngle(Point a, Point b, Point c) {
   double theta = (beta - alpha) * 180 / M_PI;
   return min(theta, 360 - theta);
 }
+Vector getAngleBisectorVector(Point a, Point b, Point c) {
+  Vector v = a - b, w = c - b;
+  v = v / abs(v), w = w / abs(w);
+  Vector u = v + w;
+  return u / abs(u);
+}
 
 struct Segment {
   Point p1, p2;
@@ -126,6 +133,20 @@ Line getPerpendicularBisector(Point p1, Point p2) {
   Point c = (p1 + p2) / 2.0;
   Point q = Point(c.x + (p1.y - p2.y), c.y + (p2.x - p1.x));
   return Line(c, q);
+}
+vector<Vector> getNormalLineVector(Line l) {
+  vector<Vector> vs;
+  Vector v = l.p2 - l.p1, p = v / abs(v);
+  vs.emplace_back(-p.y, p.x);
+  vs.emplace_back(p.y, p.x);
+  return vs;
+}
+vector<Line> getTranslation(Line l, double d) {
+  vector<Vector> nlv = getNormalLineVector(l);
+  vector<Line> nl;
+  nl.emplace_back(l.p1 + nlv[0]*d, l.p2 + nlv[0]*d);
+  nl.emplace_back(l.p1 + nlv[1]*d, l.p2 + nlv[1]*d);
+  return nl;
 }
 
 struct Circle {

@@ -55,3 +55,6 @@ double getDistance(Point a, Point b);
 
 // ∠ABCを求める
 double getAngle(Point a, Point b, Point c);
+
+// ∠ABCの二等分線
+Vector getAngleBisectorVector(Point a, Point b, Point c);

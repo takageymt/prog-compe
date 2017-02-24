@@ -41,3 +41,9 @@ Point getCrossPointLL(Line l1, Line l2);
 
 // 垂直二等分線
 Line getPerpendicularBisector(Point p1, Point p2);
+
+// 直線の法線ベクトル(方向2つ)
+vector<Vector> getNormalVector(Line l);
+
+// 直線の平行移動
+vector<Line> getTranslation(Line l, double d);

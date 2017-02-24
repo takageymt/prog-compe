@@ -12,7 +12,7 @@ struct SegmentTree
   inline void lazy_evaluate(int k, int l, int r)
   {
     sum[k] += lazy[k] * (r - l);
-    if(k < sz) {
+    if(r - l > 1) {
       lazy[2*k+1] += lazy[k];
       lazy[2*k+2] += lazy[k];
     }
@@ -40,7 +40,7 @@ struct SegmentTree
     lazy_evaluate(k, l, r);
     if(r <= a || b <= l) return 0;
     if(a <= l && r <= b) return sum[k];
-    return sum[k] = query(a, b, 2*k+1, l, (l+r)/2) + query(a, b, 2*k+2, (l+r)/2, r);
+    return query(a, b, 2*k+1, l, (l+r)/2) + query(a, b, 2*k+2, (l+r)/2, r);
   }
   int query(int a, int b)
   {

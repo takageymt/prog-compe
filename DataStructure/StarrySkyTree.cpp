@@ -8,7 +8,7 @@ struct StarrySkyTree
     sz = 1;
     while(sz < n) sz *= 2;
     data.resize(2*sz-1, inf);
-    addend.resize(2*sz-1, 0);    
+    addend.resize(2*sz-1, 0);
   }
   void add(int a, int b, int x, int k, int l, int r)
   {
@@ -17,9 +17,9 @@ struct StarrySkyTree
       addend[k] += x;
       return;
     }
-    
-    add(a, b, 2*k+1, x, l, (l+r)/2);
-    add(a, b, 2*k+2, x, (l+r)/2, r);
+
+    add(a, b, x, 2*k+1, l, (l+r)/2);
+    add(a, b, x, 2*k+2, (l+r)/2, r);
 
     data[k] = min(data[2*k+1] + addend[2*k+1],
 		  data[2*k+2] + addend[2*k+2]);

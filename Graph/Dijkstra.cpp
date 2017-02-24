@@ -7,7 +7,7 @@ struct Dijkstra
     edge(){}
     edge(int to, int weight):to(to), weight(weight){}
   };
-  
+
   vector< vector<edge> > graph;
   vector<int> route, prevv, preve;
   vector<int> distance;
@@ -19,6 +19,7 @@ struct Dijkstra
   }
   int shortest_path(int source, int destination = -1)
   {
+    typedef pair<int, int> Pi;
     priority_queue<Pi, vector<Pi>, greater<Pi> > que;
     que.push(Pi(0, source));
     distance[source] = 0;
