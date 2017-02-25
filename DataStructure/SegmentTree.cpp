@@ -20,7 +20,7 @@ struct SegmentTree
   }
   int query(int a, int b, int k, int l, int r)
   {
-    if(r <= a || b <= l) return 0;
+    if(r <= a || b <= l) return inf;
     if(a <= l && r <= b) return data[k];
     return min(query(a, b, 2*k+1, l, (l+r)/2),
 	       query(a, b, 2*k+2, (l+r)/2, r));
