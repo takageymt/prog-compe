@@ -6,8 +6,6 @@ using namespace std;
 #define all(v) begin(v), end(v)
 #define rep(i, n) for(int i = 0; i < (int)(n); i++)
 #define reps(i, s, n) for(int i = (int)(s); i < (int)(n); i++)
-#define min(...) min({__VA_ARGS__})
-#define max(...) max({__VA_ARGS__})
 
 template<class T1, class T2> void chmin(T1 &a, T2 b){if(a>b)a=b;}
 template<class T1, class T2> void chmax(T1 &a, T2 b){if(a<b)a=b;}
