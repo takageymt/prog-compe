@@ -155,13 +155,31 @@ struct Circle {
   Circle(Point c = Point(), double r = 0.0):c(c), r(r){}
 };
 
-pair<Point, Point> getCrossPoints(Circle c, Line l) {
-  // assert(intersect(c, l));
-  Vector pr = project(l, c.c);
-  Vector e = (l.p2 - l.p1) / abs(l.p2 - l.p1);
-  double base = sqrt(c.r*c.r - norm(pr - c.c));
-  return make_pair(pr + e * base, pr - e * base);
+bool intersect(Circle c1, Circle c2) {
+  double d = getDistance(c1.c, c2.c);
+  return le(d, c1.r+c2.r) && !lt(d, fabs(c1.r-c2.r));
 }
+
+vector<Point> getCrossPointsCL(Circle c, Line l) {
+  vector<Point> res;
+  Vector pr = project(l, c.c);
+  if(lt(c.r, abs(c.c-pr))) return res;
+  Vector e = (l.p2-l.p1)/abs(l.p2-l.p1);
+  double base = sqrt(c.r*c.r-norm(pr-c.c));
+  res.push_back(pr+e*base);
+  if(!eq(base, 0)) res.push_back(pr-e*base);
+  return res;
+}
+
+vector<Point> getCrossPointsCS(Circle c, Segment s) {
+  vector<Point> res;
+  vector<Point> pl = getCrossPoints(c, s);
+  for(Point p : pl) {
+    if(ccw(s.p1, s.p2, p) == ON_SEGMENT) res.push_back(p);
+  }
+  return res;
+}
+
 
 double arg(Vector p) { return atan2(p.y, p.x); }
 Vector polar(double a, double r) { return Point(cos(r) * a, sin(r) * a); }
@@ -202,7 +220,7 @@ Polygon convexHull(Polygon ps) {
   int N = ps.size(), j = 0;
   Polygon pg(N*2);
 
-  sort(ps.begin(), ps.end(), [](Point p1, Point p2) -> bool {
+  sort(ps.begin(), ps.end(), [&](Point p1, Point p2) -> bool {
       return p1.y != p2.y ? lt(p1.y, p2.y) : lt(p1.x, p2.x); });
   for(int i = 0; i < N; i++, j++) {
     while(j >= 2 && ccw(pg[j-2], pg[j-1], ps[i]) == -1) j--;
@@ -264,25 +282,25 @@ struct edge {
 typedef vector< vector<edge> > Graph;
 
 Graph segmentArrangement(vector<Segment>& segs, vector<Point>& ps) {
-  for(int i = 0; i < segs.size(); i++) {
+  for(int i = 0; i < (int)segs.size(); i++) {
     ps.push_back(segs[i].p1);
     ps.push_back(segs[i].p2);
-    for(int j = i+1; j < segs.size(); j++) {
+    for(int j = i+1; j < (int)segs.size(); j++) {
       if(intersect(segs[i], segs[j])) ps.push_back(getCrossPoint(segs[i], segs[j]));
     }
   }
   sort(ps.begin(), ps.end());
   ps.erase(unique(ps.begin(), ps.end()), ps.end());
   Graph graph(ps.size());
-  for(int i = 0; i < segs.size(); i++) {
+  for(int i = 0; i < (int)segs.size(); i++) {
     vector< pair<double, int> > ls;
-    for(int j = 0; j < ps.size(); j++) {
+    for(int j = 0; j < (int)ps.size(); j++) {
       if(intersect(segs[i], ps[j])) {
 	ls.emplace_back(getDistanceSP(segs[i], ps[j]), j);
       }
     }
     sort(ls.begin(), ls.end());
-    for(int j = 0; j+1 < ls.size(); j++) {
+    for(int j = 0; j+1 < (int)ls.size(); j++) {
       int u = ls[j].second, v = ls[j+1].second;
       graph[u].emplace_back(v, getDistance(ps[u], ps[v]));
       graph[v].emplace_back(u, getDistance(ps[u], ps[v]));
