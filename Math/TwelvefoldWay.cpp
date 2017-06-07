@@ -36,7 +36,7 @@ inline int64 count1_1_2(int64 n, int64 m)
 // 重複組合せ
 inline int64 count0_1_0(int64 n, int64 m)
 {
-  return modComb(n+m-1, m-1);
+  return modComb(n+m-1, m);
 }
 
 // ボール:区別無 箱区別有 それぞれの箱に高々1個

@@ -43,8 +43,10 @@ struct Dijkstra
   {
     for(int v = destination; v != source; v = prevv[v]) {
       if(prevv[v] == -1) return false;
-      route[prevv[v]].push_back(graph[prevv[v]][preve[v]]);
+      route.push_back(graph[prevv[v]][preve[v]].to);
     }
+    route.push_back(source);
+    reverse(route.begin(), route.end());
     return true;
   }
 };

@@ -3,16 +3,17 @@
 using namespace std;
 
 #define int long long
-#define all(v) begin(v), end(v)
-#define rep(i, n) for(int i = 0; i < (int)(n); i++)
-#define reps(i, s, n) for(int i = (int)(s); i < (int)(n); i++)
+#define all(v) (v).begin(), (v).end()
+#define rez(v, n) (v).clear(), (v).resize(n)
+#define reps(i, m, n) for(int i = (int)(m); i < (int)(n); i++)
+#define rep(i, n) reps(i, 0, n)
 
 template<class T1, class T2> void chmin(T1 &a, T2 b){if(a>b)a=b;}
 template<class T1, class T2> void chmax(T1 &a, T2 b){if(a<b)a=b;}
 
-using pint = pair<int, int>;
-using tint = tuple<int, int, int>;
-using vint = vector<int>;
+typedef pair<int, int> Pi;
+typedef tuple<int, int, int> Ti;
+typedef vector<int> vint;
 
 const int inf = 1LL << 55;
 const int mod = 1e9 + 7;
