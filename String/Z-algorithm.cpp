@@ -1,13 +1,15 @@
 vector<int> Zalgorithm(string S) {
-  vector<int> A(S.size());
-  A[0] = S.size();
+  int n = S.size();
+  vector<int> A(n);
+  A[0] = n;
   int i = 1, j = 0;
-  while(i < (int)S.size()) {
-    while(i+j < (int)S.size() && S[j] == S[i+j]) j++;
+  while(i < n) {
+    while(i+j < n && S[j] == S[i+j]) j++;
     A[i] = j;
     if(j == 0) { i++; continue; }
-    int k = 0;
-    while(i+k < (int)S.size() && k+A[k] < j) A[i+k] = A[k], k++;
+    int k = 1;
+    while(i+k < n && k+A[k] < j) A[i+k] = A[k], k++;
     i += k, j -= k;
   }
+  return A;
 }

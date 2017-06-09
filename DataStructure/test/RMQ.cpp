@@ -1,10 +1,26 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define int long long
+#define all(v) (v).begin(), (v).end()
+#define resz(v, ...) (v).clear(), (v).resize(__VA_ARGS__)
+#define reps(i, m, n) for(int i = (int)(m); i < (int)(n); i++)
+#define rep(i, n) reps(i, 0, n)
+
+template<class T1, class T2> void chmin(T1 &a, T2 b){if(a>b)a=b;}
+template<class T1, class T2> void chmax(T1 &a, T2 b){if(a<b)a=b;}
+
+typedef pair<int, int> Pi;
+typedef tuple<int, int, int> Ti;
+typedef vector<int> vint;
+
 // SegmentTree
 template<class T> struct Min {
   using Type = T;
   T nil;
   Min(){}
   Min(T nil):nil(nil){}
-  void update(T& a, T b) { a = b; }
   T operator()(T a, T b) { return a < b ? a : b; }
 };
 template<class T> struct Max {
@@ -12,7 +28,6 @@ template<class T> struct Max {
   T nil;
   Max(){}
   Max(T nil):nil(nil){}
-  void update(T& a, T b) { a = b; }
   T operator()(T a, T b) { return a > b ? a : b; }
 };
 template<class T> struct Sum {
@@ -20,7 +35,6 @@ template<class T> struct Sum {
   T nil;
   Sum(){}
   Sum(T nil):nil(nil){}
-  void update(T& a, T b) { a += b; }
   T operator()(T a, T b) { return a + b; }
 };
 
@@ -31,11 +45,11 @@ template<class Monoid> struct SegmentTree {
   int sz;
   SegmentTree(int n, Monoid f):func(f) {
     sz = 1; while(sz < n) sz <<= 1;
-    data.resize(2*sz-1, func.nil);
+    data.resize(2*sz+1, func.nil);
   }
   void update(int k, T x) {
     k += sz-1;
-    func.update(data[k], x);
+    data[k] = x;
     while(k > 0) {
       k = (k-1)/2;
       data[k] = func(data[2*k+1], data[2*k+2]);
@@ -50,3 +64,26 @@ template<class Monoid> struct SegmentTree {
     return query(a, b, 0, 0, sz);
   }
 };
+
+const int inf = 1LL << 55;
+const int mod = 1e9 + 7;
+
+signed main()
+{
+  cin.tie(0);
+  ios_base::sync_with_stdio(0);
+  cout << fixed << setprecision(12);
+
+  int n, q;
+  cin >> n >> q;
+  SegmentTree<Min<int> > seg(n, Min<int>((1LL<<31)-1));
+  rep(i, q) {
+    int com, x, y;
+    cin >> com >> x >> y;
+    if(com == 0) seg.update(x, y);
+    else cout << seg.query(x, y+1) << endl;
+  }
+
+
+  return 0;
+}

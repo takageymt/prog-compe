@@ -4,7 +4,7 @@ using namespace std;
 
 #define int long long
 #define all(v) (v).begin(), (v).end()
-#define rez(v, n) (v).clear(), (v).resize(n)
+#define resz(v, ...) (v).clear(), (v).resize(__VA_ARGS__)
 #define reps(i, m, n) for(int i = (int)(m); i < (int)(n); i++)
 #define rep(i, n) reps(i, 0, n)
 
