@@ -10,7 +10,7 @@ struct UnionFind
   {
     x = find(x), y = find(y);
     if(x != y) {
-      if(data[x] < data[y]) swap(x, y);
+      if(data[x] > data[y]) swap(x, y);
       data[x] += data[y]; data[y] = x;
     }
     return -data[x];
