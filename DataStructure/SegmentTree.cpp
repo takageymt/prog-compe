@@ -4,7 +4,6 @@ template<class T> struct Min {
   T nil;
   Min(){}
   Min(T nil):nil(nil){}
-  void update(T& a, T b) { a = b; }
   T operator()(T a, T b) { return a < b ? a : b; }
 };
 template<class T> struct Max {
@@ -12,7 +11,6 @@ template<class T> struct Max {
   T nil;
   Max(){}
   Max(T nil):nil(nil){}
-  void update(T& a, T b) { a = b; }
   T operator()(T a, T b) { return a > b ? a : b; }
 };
 template<class T> struct Sum {
@@ -20,7 +18,6 @@ template<class T> struct Sum {
   T nil;
   Sum(){}
   Sum(T nil):nil(nil){}
-  void update(T& a, T b) { a += b; }
   T operator()(T a, T b) { return a + b; }
 };
 
@@ -35,7 +32,15 @@ template<class Monoid> struct SegmentTree {
   }
   void update(int k, T x) {
     k += sz-1;
-    func.update(data[k], x);
+    data[k] = x;
+    while(k > 0) {
+      k = (k-1)/2;
+      data[k] = func(data[2*k+1], data[2*k+2]);
+    }
+  }
+  void add(int k, T x) {
+    k += sz-1;
+    data[k] += x;
     while(k > 0) {
       k = (k-1)/2;
       data[k] = func(data[2*k+1], data[2*k+2]);
