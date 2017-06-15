@@ -42,6 +42,16 @@ bool isParallel(Point a1, Point a2, Point b1, Point b2) {
   return isParallel(a1 - a2, b1 - b2);
 }
 
+Point rotate(Point p, double th) {
+  // th[rad]
+  return Point(cos(th)*p.x-sin(th)*p.y, sin(th)*p.x+cos(th)*p.y);
+}
+
+Point rotate90(Point p) {
+  return Point(-p.y, p.x);
+
+}
+
 #define COUNTER_CLOCKWISE +1
 #define CLOCKWISE         -1
 #define ONLINE_BACK       +2
@@ -77,57 +87,50 @@ Vector getAngleBisectorVector(Point a, Point b, Point c) {
 }
 
 struct Segment {
-  Point p1, p2;
-  Segment(Point p1 = Point(), Point p2 = Point()):p1(p1), p2(p2){}
+  Point s, t;
+  Segment(Point s = Point(), Point t = Point()):s(s), t(t){}
 };
 typedef Segment Line;
 
-bool isOrthogonal(Segment s1, Segment s2) {
-  return eq(dot(s1.p2 - s1.p1, s2.p2 - s2.p1), 0.0);
-}
-bool isParallel(Segment s1, Segment s2) {
-  return eq(cross(s1.p2 - s1.p1, s2.p2 - s2.p1), 0.0);
-}
-
 Point project(Segment s, Point p) {
-  Vector base = s.p2 - s.p1;
-  double r = dot(p - s.p1, base) / norm(base);
-  return s.p1 + base * r;
+  Vector base = s.t - s.s;
+  double r = dot(p - s.s, base) / norm(base);
+  return s.s + base * r;
 }
 Point reflect(Segment s, Point p) {
   return p + (project(s, p) - p) * 2.0;
 }
 
 bool intersect(Segment s1, Segment s2) {
-  return intersect(s1.p1, s1.p2, s2.p1, s2.p2);
+  return intersect(s1.s, s1.t, s2.s, s2.t);
 }
 
 double getDistanceLP(Line l, Point p) {
-  return abs(cross(l.p2 - l.p1, p - l.p1) / abs(l.p2 - l.p1));
+  return abs(cross(l.t - l.s, p - l.s) / abs(l.t - l.s));
 }
 double getDistanceSP(Segment s, Point p) {
-  if(dot(s.p2 - s.p1, p - s.p1) < 0.0) return abs(p - s.p1);
-  if(dot(s.p1 - s.p2, p - s.p2) < 0.0) return abs(p - s.p2);
+  if(dot(s.t - s.s, p - s.s) < 0.0) return abs(p - s.s);
+  if(dot(s.s - s.t, p - s.t) < 0.0) return abs(p - s.t);
   return getDistanceLP(s, p);
 }
 double getDistance(Segment s1, Segment s2) {
   if(intersect(s1, s2)) return 0.0;
-  return min(min(getDistanceSP(s1, s2.p1), getDistanceSP(s1, s2.p2)),
-	     min(getDistanceSP(s2, s1.p1), getDistanceSP(s2, s1.p2)));
+  return min(min(getDistanceSP(s1, s2.s), getDistanceSP(s1, s2.t)),
+	     min(getDistanceSP(s2, s1.s), getDistanceSP(s2, s1.t)));
 }
 
 Point getCrossPoint(Segment s1, Segment s2) {
-  Vector base = s2.p2 - s2.p1;
-  double d1 = abs(cross(base, s1.p1 - s2.p1));
-  double d2 = abs(cross(base, s1.p2 - s2.p1));
+  Vector base = s2.t - s2.s;
+  double d1 = abs(cross(base, s1.s - s2.s));
+  double d2 = abs(cross(base, s1.t - s2.s));
   double t = d1 / (d1 + d2);
-  return s1.p1 + (s1.p2 - s1.p1) * t;
+  return s1.s + (s1.t - s1.s) * t;
 }
 Point getCrossPointLL(Line l1, Line l2) {
-  Vector v1 = l1.p2 - l1.p1, v2 = l2.p2 - l2.p1;
+  Vector v1 = l1.t - l1.s, v2 = l2.t - l2.s;
   double d = cross(v2, v1);
-  if(abs(d) < EPS) return l2.p1;
-  return l1.p1 + v1 * cross(v2, l2.p2 - l1.p1) * (1.0 / d);
+  if(abs(d) < EPS) return l2.s;
+  return l1.s + v1 * cross(v2, l2.t - l1.s) * (1.0 / d);
 }
 Line getPerpendicularBisector(Point p1, Point p2) {
   Point c = (p1 + p2) / 2.0;
@@ -136,7 +139,7 @@ Line getPerpendicularBisector(Point p1, Point p2) {
 }
 vector<Vector> getNormalLineVector(Line l) {
   vector<Vector> vs;
-  Vector v = l.p2 - l.p1, p = v / abs(v);
+  Vector v = l.t - l.s, p = v / abs(v);
   vs.emplace_back(-p.y, p.x);
   vs.emplace_back(p.y, p.x);
   return vs;
@@ -144,28 +147,28 @@ vector<Vector> getNormalLineVector(Line l) {
 vector<Line> getTranslation(Line l, double d) {
   vector<Vector> nlv = getNormalLineVector(l);
   vector<Line> nl;
-  nl.emplace_back(l.p1 + nlv[0]*d, l.p2 + nlv[0]*d);
-  nl.emplace_back(l.p1 + nlv[1]*d, l.p2 + nlv[1]*d);
+  nl.emplace_back(l.s + nlv[0]*d, l.t + nlv[0]*d);
+  nl.emplace_back(l.s + nlv[1]*d, l.t + nlv[1]*d);
   return nl;
 }
 
 struct Circle {
-  Point c;
+  Point p;
   double r;
-  Circle(Point c = Point(), double r = 0.0):c(c), r(r){}
+  Circle(Point p = Point(), double r = 0.0):p(p), r(r){}
 };
 
 bool intersect(Circle c1, Circle c2) {
-  double d = getDistance(c1.c, c2.c);
+  double d = getDistance(c1.p, c2.p);
   return le(d, c1.r+c2.r) && !lt(d, fabs(c1.r-c2.r));
 }
 
 vector<Point> getCrossPointsCL(Circle c, Line l) {
   vector<Point> res;
-  Vector pr = project(l, c.c);
-  if(lt(c.r, abs(c.c-pr))) return res;
-  Vector e = (l.p2-l.p1)/abs(l.p2-l.p1);
-  double base = sqrt(c.r*c.r-norm(pr-c.c));
+  Vector pr = project(l, c.p);
+  if(lt(c.r, abs(c.p-pr))) return res;
+  Vector e = (l.t-l.s)/abs(l.t-l.s);
+  double base = sqrt(c.r*c.r-norm(pr-c.p));
   res.push_back(pr+e*base);
   if(!eq(base, 0)) res.push_back(pr-e*base);
   return res;
@@ -173,9 +176,9 @@ vector<Point> getCrossPointsCL(Circle c, Line l) {
 
 vector<Point> getCrossPointsCS(Circle c, Segment s) {
   vector<Point> res;
-  vector<Point> pl = getCrossPoints(c, s);
+  vector<Point> pl = getCrossPointsCL(c, s);
   for(Point p : pl) {
-    if(ccw(s.p1, s.p2, p) == ON_SEGMENT) res.push_back(p);
+    if(ccw(s.s, s.t, p) == ON_SEGMENT) res.push_back(p);
   }
   return res;
 }
@@ -185,10 +188,56 @@ double arg(Vector p) { return atan2(p.y, p.x); }
 Vector polar(double a, double r) { return Point(cos(r) * a, sin(r) * a); }
 pair<Point, Point> getCrossPoints(Circle c1, Circle c2) {
   // assert(intersect(c1, c2));
-  double d = abs(c1.c - c2.c);
+  double d = abs(c1.p - c2.p);
   double a = acos((c1.r*c1.r + d*d - c2.r*c2.r) / (2*c1.r*d));
-  double t = arg(c2.c - c1.c);
-  return make_pair(c1.c + polar(c1.r, t + a), c1.c + polar(c1.r, t - a));
+  double t = arg(c2.p - c1.p);
+  return make_pair(c1.p + polar(c1.r, t + a), c1.p + polar(c1.r, t - a));
+}
+
+vector<Point> tangentCP(Circle c, Point p) {
+  Vector a = p-c.p;
+  vector<Point> res;
+  double x = norm(a);
+  double d = x-c.r*c.r;
+  if(d < -EPS) return res;
+  d = max(d, 0.0);
+  Point p1 = a*(c.r*c.r/x);
+  Point p2 = rotate90(a)*(-c.r*sqrt(d)/x);
+  res.emplace_back(c.p+p1-p2);
+  res.emplace_back(c.p+p1+p2);
+  return res;
+}
+
+vector<Point> tangentCC(Circle c1, Circle c2) {
+  vector<Line> res;
+  vector<Point> ps, qs;
+  if(abs(c2.p-c1.p) < EPS) return res;
+  // 外接線
+  if(abs(c1.r-c2.r) < EPS) {
+    Point dir = c2.p-c1.p;
+    dir = rotate90(dir*(c1.r/abs(dir)));
+    res.emplace_back(c1.p+dir, c2.p+c1.r);
+    res.emplace_back(c1.p-dir, c2.p-c1.r);
+  } else {
+    Point p = c1.p*(-c2.r)+c2.p*c1.r;
+    p = p*(1.0/(c1.r-c2.r));
+    ps = tangentCP(c1, p);
+    qs = tangentCP(c2, p);
+    int n = ps.size(), m = qs.size();
+    for(int i = 0; i < min(n, m); i++) {
+      res.emplace_back(ps[i], qs[i]);
+    }
+  }
+  // 内接線
+  Point p = c1.p*c2.r+c2.p*c1.r;
+  p = p*(1.0/(c1.r+c2.r));
+  ps = tangentCP(c1, p);
+  qs = tangentCP(c2, p);
+  int n = ps.size(), m = qs.size();
+  for(int i = 0; i < min(n, m); i++) {
+    res.emplace_back(ps[i], qs[i]);
+  }
+  return res;
 }
 
 typedef vector<Point> Polygon;
@@ -239,8 +288,8 @@ Polygon convexCut(Polygon s, Line l) {
   Polygon t;
   for(int i = 0; i < (int)s.size(); i++) {
     Point a = s[i], b = s[(i+1)%s.size()];
-    if(ccw(l.p1, l.p2, a) != -1) t.push_back(a);
-    if(ccw(l.p1, l.p2, a) * ccw(l.p1, l.p2, b) < 0) {
+    if(ccw(l.s, l.t, a) != -1) t.push_back(a);
+    if(ccw(l.s, l.t, a) * ccw(l.s, l.t, b) < 0) {
       t.push_back(getCrossPointLL(Line(a, b), l));
     }
   }
@@ -248,17 +297,17 @@ Polygon convexCut(Polygon s, Line l) {
 }
 
 bool mergeIfAble(Segment &s1, Segment s2) {
-  if(abs(cross(s1.p2 - s1.p1, s2.p2 - s2.p1)) > EPS) return false;
-  if(ccw(s1.p1, s2.p1, s1.p2) == COUNTER_CLOCKWISE ||
-     ccw(s1.p1, s2.p1, s1.p2) == CLOCKWISE) return false;
-  if(ccw(s1.p1, s1.p2, s2.p1) == ONLINE_FRONT ||
-     ccw(s2.p1, s2.p2, s1.p1) == ONLINE_FRONT) return false;
-  s1 = Segment(min(s1.p1, s2.p1), max(s1.p2, s2.p2));
+  if(abs(cross(s1.t - s1.s, s2.t - s2.s)) > EPS) return false;
+  if(ccw(s1.s, s2.s, s1.t) == COUNTER_CLOCKWISE ||
+     ccw(s1.s, s2.s, s1.t) == CLOCKWISE) return false;
+  if(ccw(s1.s, s1.t, s2.s) == ONLINE_FRONT ||
+     ccw(s2.s, s2.t, s1.s) == ONLINE_FRONT) return false;
+  s1 = Segment(min(s1.s, s2.s), max(s1.t, s2.t));
   return true;
 }
 void mergeSegments(vector<Segment>& segs) {
   for(int i = 0; i < segs.size(); i++) {
-    if(segs[i].p2 < segs[i].p1) swap(segs[i].p1, segs[i].p2);
+    if(segs[i].t < segs[i].s) swap(segs[i].s, segs[i].t);
   }
   for(int i = 0; i < segs.size(); i++) {
     for(int j = i+1; j < segs.size(); j++) {
@@ -283,8 +332,8 @@ typedef vector< vector<edge> > Graph;
 
 Graph segmentArrangement(vector<Segment>& segs, vector<Point>& ps) {
   for(int i = 0; i < (int)segs.size(); i++) {
-    ps.push_back(segs[i].p1);
-    ps.push_back(segs[i].p2);
+    ps.push_back(segs[i].s);
+    ps.push_back(segs[i].t);
     for(int j = i+1; j < (int)segs.size(); j++) {
       if(intersect(segs[i], segs[j])) ps.push_back(getCrossPoint(segs[i], segs[j]));
     }
