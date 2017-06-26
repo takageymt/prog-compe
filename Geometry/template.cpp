@@ -46,10 +46,8 @@ Point rotate(Point p, double th) {
   // th[rad]
   return Point(cos(th)*p.x-sin(th)*p.y, sin(th)*p.x+cos(th)*p.y);
 }
-
 Point rotate90(Point p) {
   return Point(-p.y, p.x);
-
 }
 
 #define COUNTER_CLOCKWISE +1
@@ -183,15 +181,17 @@ vector<Point> getCrossPointsCS(Circle c, Segment s) {
   return res;
 }
 
-
 double arg(Vector p) { return atan2(p.y, p.x); }
 Vector polar(double a, double r) { return Point(cos(r) * a, sin(r) * a); }
-pair<Point, Point> getCrossPoints(Circle c1, Circle c2) {
+vector<Point> getCrossPoints(Circle c1, Circle c2) {
   // assert(intersect(c1, c2));
+  vector<Point> res;
   double d = abs(c1.p - c2.p);
   double a = acos((c1.r*c1.r + d*d - c2.r*c2.r) / (2*c1.r*d));
   double t = arg(c2.p - c1.p);
-  return make_pair(c1.p + polar(c1.r, t + a), c1.p + polar(c1.r, t - a));
+  res.push_back(c1.p + polar(c1.r, t + a));
+  res.push_back(c1.p + polar(c1.r, t - a));
+  return res;
 }
 
 vector<Point> tangentCP(Circle c, Point p) {
@@ -208,7 +208,7 @@ vector<Point> tangentCP(Circle c, Point p) {
   return res;
 }
 
-vector<Point> tangentCC(Circle c1, Circle c2) {
+vector<Line> tangentCC(Circle c1, Circle c2) {
   vector<Line> res;
   vector<Point> ps, qs;
   if(abs(c2.p-c1.p) < EPS) return res;
@@ -216,8 +216,8 @@ vector<Point> tangentCC(Circle c1, Circle c2) {
   if(abs(c1.r-c2.r) < EPS) {
     Point dir = c2.p-c1.p;
     dir = rotate90(dir*(c1.r/abs(dir)));
-    res.emplace_back(c1.p+dir, c2.p+c1.r);
-    res.emplace_back(c1.p-dir, c2.p-c1.r);
+    res.emplace_back(c1.p+dir, c2.p+dir);
+    res.emplace_back(c1.p-dir, c2.p-dir);
   } else {
     Point p = c1.p*(-c2.r)+c2.p*c1.r;
     p = p*(1.0/(c1.r-c2.r));

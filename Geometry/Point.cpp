@@ -47,6 +47,11 @@ bool isParallel(Point a1, Point a2, Point b1, Point b2);
 // 反時計回り
 int ccw(Point p0, Point p1, Point p2);
 
+// 回転
+Point rotate(Point p, double th);
+// 90°回転
+Point rotate90(Point p);
+
 // 交差判定
 bool intersect(Point p1, Point p2, Point p3, Point p4);
 

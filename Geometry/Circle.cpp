@@ -16,3 +16,8 @@ pair<Point, Point> getCrossPoints(Circle c, Line l);
 double arg(Vector p);
 Vector polar(double a, double r);
 pair<Point, Point> getCrossPoints(Circle c1, Circle c2);
+
+// 点pを通る円cの接線
+vector<Point> tangentCP(Circle c, Point p);
+// 円c1と円c2の共通接線
+vector<Point> tangentCC(Circle c1, Circle c2);
