@@ -1,6 +1,5 @@
 // Bellman-Ford algorithm: Single-source shoretest paths
-struct BellmanFord
-{
+struct BellmanFord {
   struct edge {
     int from, to, weight;
     edge(){}
@@ -9,12 +8,10 @@ struct BellmanFord
   vector<edge> edges;
   vector<int> distance;
   BellmanFord(int sz):distance(sz, inf){}
-  void add_edge(int from, int to, int weight)
-  {
+  void add_edge(int from, int to, int weight) {
     edges.push_back(edge(from, to, weight));
   }
-  bool shortest_path(int source)
-  {
+  bool shortest_path(int source) {
     distance[source] = 0;
 
     // if this graph doesn't have negative cycle,

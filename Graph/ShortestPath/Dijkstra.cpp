@@ -1,8 +1,6 @@
 // Dijkstra's algorithm with a heap: Single-source shoretest paths
-struct Dijkstra
-{
-  struct edge
-  {
+struct Dijkstra {
+  struct edge {
     int to, weight;
     edge(){}
     edge(int to, int weight):to(to), weight(weight){}
@@ -12,13 +10,11 @@ struct Dijkstra
   vector<int> route, prevv, preve;
   vector<int> distance;
   Dijkstra(int sz):graph(sz), prevv(sz, -1), preve(sz, -1), distance(sz, inf){}
-  void add_edge(int from, int to, int weight, bool is_bidirect = false)
-  {
+  void add_edge(int from, int to, int weight, bool is_bidirect = false) {
     graph[from].push_back(edge(to, weight));
     if(is_bidirect) graph[to].push_back(edge(from, weight));
   }
-  int shortest_path(int source, int destination = -1)
-  {
+  int shortest_path(int source, int destination = -1) {
     typedef pair<int, int> Pi;
     priority_queue<Pi, vector<Pi>, greater<Pi> > que;
     que.push(Pi(0, source));
@@ -39,8 +35,7 @@ struct Dijkstra
     }
     return -1;
   }
-  bool restore(int source, int destination)
-  {
+  bool restore(int source, int destination) {
     for(int v = destination; v != source; v = prevv[v]) {
       if(prevv[v] == -1) return false;
       route.push_back(graph[prevv[v]][preve[v]].to);

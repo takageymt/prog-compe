@@ -19,28 +19,69 @@ using vint = vector<int>;
 const int inf = (1LL<<31)-1;
 const int mod = 1e9 + 7;
 
-struct SegmentTree {
-  vector<int> data;
+// SegmentTree
+template<class T> struct Min {
+  using Type = T;
+  T nil;
+  Min(){}
+  Min(T nil):nil(nil){}
+  T operator()(T a, T b) { return a < b ? a : b; }
+};
+template<class T> struct Max {
+  using Type = T;
+  T nil;
+  Max(){}
+  Max(T nil):nil(nil){}
+  T operator()(T a, T b) { return a > b ? a : b; }
+};
+template<class T> struct Sum {
+  using Type = T;
+  T nil;
+  Sum(){}
+  Sum(T nil):nil(nil){}
+  T operator()(T a, T b) { return a + b; }
+};
+
+template<class Monoid> struct SegmentTree {
+  using T = typename Monoid::Type;
+  vector<T> data;
+  Monoid func;
   int sz;
-  SegmentTree(int n) {
-    sz = 1; while(sz < n) sz <<= 1;
-    data.resize(2*sz-1, inf);
+  SegmentTree(int n, Monoid f):func(f) { init(n); }
+  SegmentTree(vector<T> data_, Monoid f):func(f) {
+    init(data_.size());
+    build(data_);
   }
-  void update(int k, int x) {
+  void init(int n) {
+    sz = 1; while(sz < n) sz <<= 1;
+    data.resize(2*sz-1, func.nil);
+  }
+  void build(vector<T> data_) {
+    for(int i = 0; i < (int)data_.size(); i++) data[i+sz-1] = data_[i];
+    for(int i = sz-2; i >= 0; i--) data[i] = func(data[2*i+1], data[2*i+2]);
+  }
+  void update(int k, T x) {
     k += sz-1;
     data[k] = x;
     while(k > 0) {
-      k = (k-1) / 2;
-      data[k] = min(data[2*k+1], data[2*k+2]);
+      k = (k-1)/2;
+      data[k] = func(data[2*k+1], data[2*k+2]);
     }
   }
-  int query(int a, int b, int k, int l, int r) {
-    if(r <= a || b <= l) return inf;
-    if(a <= l && r <= b) return data[k];
-    return min(query(a, b, 2*k+1, l, (l+r)/2),
-	       query(a, b, 2*k+2, (l+r)/2, r));
+  void add(int k, T x) {
+    k += sz-1;
+    data[k] += x;
+    while(k > 0) {
+      k = (k-1)/2;
+      data[k] = func(data[2*k+1], data[2*k+2]);
+    }
   }
-  int query(int a, int b) {
+  T query(int a, int b, int k, int l, int r) {
+    if(r <= a || b <= l) return func.nil;
+    if(a <= l && r <= b) return data[k];
+    return func(query(a, b, 2*k+1, l, (l+r)/2), query(a, b, 2*k+2, (l+r)/2, r));
+  }
+  T query(int a, int b) {
     return query(a, b, 0, 0, sz);
   }
 };
@@ -53,7 +94,7 @@ signed main()
 
   int n, q;
   cin >> n >> q;
-  SegmentTree seg(n);
+  SegmentTree<Min<int> > seg(n, Min<int>(inf));
   rep(i, q) {
     int com, x, y;
     cin >> com >> x >> y;

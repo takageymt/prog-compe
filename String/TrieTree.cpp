@@ -1,18 +1,15 @@
 // Trie Tree
-struct Trie
-{
-  bool leaf;  
+struct Trie {
+  bool leaf;
   Trie *next[26];
   Trie(){
     leaf = false;
     fill(next, next + 26, nullptr);
   }
-  int c2i(char c)
-  {
+  int c2i(char c) {
     return islower(c) ? c - 'a' : -1;
   }
-  int insert(const char *s)
-  {
+  int insert(const char *s) {
     Trie *t = this;
     for(int i = 0; i < (int)strlen(s); i++) {
       int v = c2i(s[i]);
@@ -21,8 +18,7 @@ struct Trie
     }
     t->leaf = true;
   }
-  bool find(const char *s)
-  {
+  bool find(const char *s) {
     const Trie *t = this;
     for(int i = 0; i < (int)strlen(s); i++) {
       int v = c2i(s[i]);

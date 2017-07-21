@@ -1,16 +1,13 @@
 // Heavy-Light Decomposition
-struct HLDecomposition
-{
+struct HLDecomposition {
   vector< vector<int> > tree;
   vector<int> vid, head, heavy, parent, depth, inv;
   HLDecomposition(int sz):tree(sz), vid(sz, -1), head(sz), heavy(sz, -1), parent(sz), depth(sz), inv(sz){}
-  void add_edge(int u, int v)
-  {
+  void add_edge(int u, int v) {
     tree[u].push_back(v);
     tree[v].push_back(u);
   }
-  int dfs(int cur, int prev)
-  {
+  int dfs(int cur, int prev) {
     parent[cur] = prev;
     int sub = 1, max_sub = 0;
     for(int next : tree[cur]) {
@@ -22,8 +19,7 @@ struct HLDecomposition
     }
     return sub;
   }
-  int bfs()
-  {
+  int bfs() {
     int k = 0;
     queue<int> que;
     que.push(0);
@@ -39,22 +35,19 @@ struct HLDecomposition
       }
     }
   }
-  void build()
-  {
+  void build() {
     dfs(0, -1);
     bfs();
   }
   /* additional functions */
   // foreach with node
-  void foreach(int u, int v, function<void(int, int)> f)
-  {
+  void foreach(int u, int v, function<void(int, int)> f) {
     if(vid[u] > vid[v]) swap(u, v);
     f(max(vid[head[v]], vid[u]), vid[v]);
     if(head[u] != head[v]) foreach(u, parent[head[v]], f);
   }
   // foreach with edge
-  void foreach_edge(int u, int v, function<void(int, int)> f)
-  {
+  void foreach_edge(int u, int v, function<void(int, int)> f) {
     if(vid[u] > vid[v]) swap(u, v);
     if(head[u] != head[v]) {
       f(vid[head[v]], vid[v]);
@@ -64,8 +57,7 @@ struct HLDecomposition
     }
   }
   // k-th upper ancestor
-  int kth_up(int u, int k)
-  {
+  int kth_up(int u, int k) {
     while(1) {
       if(depth[head[u]] > depth[u] - k) {
 	k -= depth[u] - depth[head[u]] + 1;
@@ -77,14 +69,12 @@ struct HLDecomposition
     }
   }
   // lowest common ancestor
-  int lca(int u, int v)
-  {
+  int lca(int u, int v) {
     if(vid[u] > vid[v]) swap(u, v);
     if(head[u] == head[v]) return u;
     return lca(u, parent[head[v]]);
   }
-  int distance(int u, int v)
-  {
+  int distance(int u, int v) {
     return depth[u] + depth[v] - 2*depth[lca(u, v)];
   }
 };

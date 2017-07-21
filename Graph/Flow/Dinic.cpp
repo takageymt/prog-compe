@@ -1,23 +1,19 @@
 // Dinic: maximum flow
-struct Dinic
-{
-  struct edge
-  {
+struct Dinic {
+  struct edge {
     int to, capacity, rev, id, isrev;
     edge(){}
     edge(int to, int capacity, int rev):to(to), capacity(capacity), rev(rev){}
   };
-  
+
   vector< vector<edge> > graph;
   vector<int> level, iter;
   Dinic(int sz):graph(sz), level(sz), iter(sz){};
-  void add_edge(int from, int to, int capacity)
-  {
+  void add_edge(int from, int to, int capacity) {
     graph[from].push_back(edge(to, capacity, (int)graph[to].size()));
     graph[to].push_back(edge(from, 0, (int)graph[from].size()-1));
   }
-  void bfs(int source)
-  {
+  void bfs(int source) {
     fill(level.begin(), level.end(), -1);
     queue<int> que;
     level[source] = 0;
@@ -33,8 +29,7 @@ struct Dinic
       }
     }
   }
-  int dfs(int v, int sink, int f)
-  {
+  int dfs(int v, int sink, int f) {
     if(v == sink) return f;
     for(int &i = iter[v]; i < (int)graph[v].size(); i++) {
       edge& e = graph[v][i];
@@ -49,8 +44,7 @@ struct Dinic
     }
     return 0;
   }
-  int max_flow(int source, int sink)
-  {
+  int max_flow(int source, int sink) {
     int flow = 0;
     while(1) {
       bfs(source);

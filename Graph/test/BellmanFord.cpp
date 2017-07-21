@@ -4,15 +4,15 @@
 #include <vector>
 #include <map>
 #include <queue>
- 
+
 using namespace std;
- 
+
 using ll = long long;
 using Pi = pair<int, int>;
 using Pl = pair<ll, ll>;
 using Ti = tuple<int, int, int>;
 using Tl = tuple<ll, ll, ll>;
- 
+
 #define pb push_back
 #define eb emplace_back
 #define mp make_pair
@@ -24,7 +24,7 @@ using Tl = tuple<ll, ll, ll>;
 #define rep(i, n) for(int i = 0; i < (int)(n); i++)
 #define reps(i, f, n) for(int i = (int)(f); i < (int)(n); i++)
 #define each(a, b) for(auto a : b)
- 
+
 const int inf = 1 << 25;
 const ll INF = 1LL << 55;
 
@@ -78,7 +78,10 @@ int main()
     int s, t, d; cin >> s >> t >> d;
     sssp.add_edge(s, t, d);
   }
-  sssp.shortest_path(r);
+  if(sssp.shortest_path(r)) {
+    cout << "NEGATIVE CYCLE" << endl;
+    return 0;
+  }
   for(int i = 0; i < V; i++) {
     if(sssp.distance[i] == inf) puts("INF");
     else cout << sssp.distance[i] << endl;

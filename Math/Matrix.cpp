@@ -2,8 +2,7 @@ typedef vector<double> vec;
 typedef vector<vec> mat;
 const double eps = 1e-8;
 
-mat mul(const mat& A, const mat& B)
-{
+mat mul(const mat& A, const mat& B) {
   mat C(A.size(), vec(B[0].size()));
   for(int i = 0; i < (int)A.size(); i++) {
     for(int j = 0; j < (int)B.size(); j++) {
@@ -15,8 +14,7 @@ mat mul(const mat& A, const mat& B)
   return C;
 }
 
-mat pow(mat A, int n)
-{
+mat pow(mat A, int n) {
   mat B(A.size(), vec(A.size()));
   for(int i = 0; i < (int)A.size(); i++) B[i][i] = 1;
   while(n > 0) {

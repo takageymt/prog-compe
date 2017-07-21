@@ -1,19 +1,15 @@
 // Sccessive Shortest Path: minimum cost maximum flow
-struct SSP
-{
-  struct edge
-  {
+struct SSP {
+  struct edge {
     int to, capacity, cost, rev;
     edge(int to, int capacity, int cost, int rev):to(to), capacity(capacity), cost(cost), rev(rev){}
   };
   vector< vector<edge> > graph;
-  void add_edge(int from, int to, int capacity, int cost)
-  {
+  void add_edge(int from, int to, int capacity, int cost) {
     graph[from].push_back(edge(to, capacity, cost, graph[to].size()));
     graph[to].push_back(edge(from, 0, -cost, graph[from].size()-1));
   }
-  int min_cost_flow(int source, int sink, int f)
-  {
+  int min_cost_flow(int source, int sink, int f) {
     int res = 0;
     while(f > 0) {
       vector<int> mincost(graph.size(), inf), prevv(graph.size()), preve(graph.size());

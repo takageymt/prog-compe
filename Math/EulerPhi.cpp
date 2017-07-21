@@ -3,8 +3,7 @@
 // n と互いに素なものの数を
 // 求める関数 φ(n)
 #define MAX_N 1000000
-int euler_phi(int n)
-{
+int euler_phi(int n) {
   static bool flag = false, is_prime[MAX_N+1];
   static int phi[MAX_N+1];
   if(flag) return phi[n];

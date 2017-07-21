@@ -1,6 +1,5 @@
 #define MAX_LEN 100
-int LevenshteinDistance(string a, string b, int dp[MAX_LEN][MAX_LEN])
-{
+int LevenshteinDistance(string a, string b, int dp[MAX_LEN][MAX_LEN]) {
   memset(dp, 0, sizeof(dp));
   for(int i = 0; i <= a.size(); i++) dp[i][0] = i;
   for(int i = 0; i <= b.size(); i++) dp[0][i] = i;

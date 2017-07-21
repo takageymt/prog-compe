@@ -1,8 +1,6 @@
 // Sccessive Shortest Path(Primal Dual): minimum cost maximum flow
-struct PrimalDual
-{
-  struct edge
-  {
+struct PrimalDual {
+  struct edge {
     int to, capacity, cost, rev;
     edge(){}
     edge(int to, int capacity, int cost, int rev):to(to), capacity(capacity), cost(cost), rev(rev){}
@@ -11,13 +9,11 @@ struct PrimalDual
   vector< vector<edge> > graph;
   vector<int> potential, mincost, prevv, preve;
   PrimalDual(int V):graph(V), potential(V), mincost(V), prevv(V), preve(V){}
-  void add_edge(int from, int to, int capacity, int cost)
-  {
+  void add_edge(int from, int to, int capacity, int cost) {
     graph[from].push_back(edge(to, capacity, cost, (int)graph[to].size()));
     graph[to].push_back(edge(from, 0, -cost, (int)graph[from].size()-1));
   }
-  int min_cost_flow(int source, int sink, int f)
-  {
+  int min_cost_flow(int source, int sink, int f) {
     int res = 0;
     fill(potential.begin(), potential.end(), 0);
     fill(prevv.begin(), prevv.end(), -1);

@@ -1,6 +1,5 @@
 // Kruskal: minimum spanning tree
-struct Kruskal
-{
+struct Kruskal {
   struct edge{
     int u, v, weight;
     edge(){}
@@ -13,12 +12,10 @@ struct Kruskal
   vector<edge> edges;
   int V;
   Kruskal(int V):V(V){}
-  void add_edge(int u, int v, int weight)
-  {
+  void add_edge(int u, int v, int weight) {
     edges.push_back(edge(u, v, weight));
   }
-  int build()
-  {
+  int build() {
     sort(edges.begin(), edges.end());
     UnionFind uf(V);
     int res = 0;

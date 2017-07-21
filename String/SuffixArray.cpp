@@ -1,11 +1,9 @@
 // Suffix Array
-struct SuffixArray
-{
+struct SuffixArray {
   int n, k;
   vector<int> sa, rank, temp;
   string s;
-  SuffixArray(const string& str)
-  {
+  SuffixArray(const string& str) {
     s = str;
     n = (int)str.size();
     sa.resize(n + 1);
@@ -27,9 +25,9 @@ struct SuffixArray
 	  int ri = i + k <= n ? rank[i + k] : -1;
 	  int rj = j + k <= n ? rank[j + k] : -1;
 	  return ri < rj;
-	}      
+	}
       };
-      
+
       sort(sa.begin(), sa.end(), comp);
 
       temp[sa[0]] = 0;
@@ -42,8 +40,7 @@ struct SuffixArray
       }
     }
   }
-  bool contain(const string& t)
-  {
+  bool contain(const string& t) {
     int l = 0, r = n;
     while(r - l > 1) {
       int m = (l + r) / 2;
@@ -52,8 +49,7 @@ struct SuffixArray
     }
     return s.compare(sa[r], t.size(), t) == 0;
   }
-  int find(const string& t)
-  {
+  int find(const string& t) {
     int l = 0, r = n;
     while(r - l > 1) {
       int m = (l + r) / 2;
@@ -62,8 +58,7 @@ struct SuffixArray
     }
     return s.compare(sa[r], t.size(), t) == 0 ? r : -1;
   }
-  int lower_bound(const string& t)
-  {
+  int lower_bound(const string& t) {
     int l = 0, r = n;
     while(r - l > 1) {
       int m = (l + r) / 2;
@@ -72,8 +67,7 @@ struct SuffixArray
     }
     return r;
   }
-  int upper_bound(const string& t)
-  {
+  int upper_bound(const string& t) {
     int l = 0, r = n + 1;
     while(r - l > 1) {
       int m = (l + r) / 2;
@@ -82,8 +76,7 @@ struct SuffixArray
     }
     return r;
   }
-  int operator[](int k) const
-  {
+  int operator[](int k) const {
     return sa[k];
   }
 };

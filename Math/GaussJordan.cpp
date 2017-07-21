@@ -2,8 +2,7 @@
 typedef vector<double> vec;
 typedef vector<vec> mat;
 const double eps = 1e-9;
-vec gauss_jordan(const mat& A, const vec b)
-{
+vec gauss_jordan(const mat& A, const vec b) {
   int n = A.size();
   // 拡大係数行列
   mat B(n, vec(n + 1));

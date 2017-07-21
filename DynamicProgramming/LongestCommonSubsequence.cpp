@@ -1,6 +1,5 @@
 #define MAX_LEN 100
-int LongenstCommonSubsequence(string a, string b, int dp[MAX_LEN][MAX_LEN])
-{
+int LongenstCommonSubsequence(string a, string b, int dp[MAX_LEN][MAX_LEN]) {
   memset(dp, 0, sizeof(dp));
   for(int i = 1; i <= a.size(); i++) {
     for(int j = 1; j <= b.size(); j++) {

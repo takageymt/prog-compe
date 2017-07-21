@@ -1,5 +1,5 @@
 const int sqrtN = 512;
-struct RSQ {
+struct RMQ {
   int N, K;
   vector<int> data;
   vector<int> bucketMin;

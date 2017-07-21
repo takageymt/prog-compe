@@ -1,32 +1,27 @@
 // Lowest Common Ancestor (Doubling)
-struct LCA
-{
+struct LCA {
   vector< vector<int> > tree, parent;
   vector<int> depth;
   int log_V;
-  LCA(int V)
-  {
+  LCA(int V) {
     log_V = 1;
     while((1 << log_V) <= V) log_V++;
     tree.resize(V);
-    parent.resize(log_V, vector<int>(V, -1));    
+    parent.resize(log_V, vector<int>(V, -1));
     depth.resize(V);
   }
-  void add_edge(int u, int v)
-  {
+  void add_edge(int u, int v) {
     tree[u].emplace_back(v);
-    tree[v].emplace_back(u);    
+    tree[v].emplace_back(u);
   }
-  void dfs(int u, int p, int d)
-  {
+  void dfs(int u, int p, int d) {
     parent[0][u] = p;
     depth[u] = d;
     for(auto v : tree[u]) {
       if(v != p) dfs(v, u, d + 1);
     }
   }
-  void init(int root = 0)
-  {
+  void init(int root = 0) {
     dfs(root, -1, 0);
     for(int i = 0; i + 1 < log_V; i++) {
       for(int v = 0; v < parent[i].size(); v++) {
@@ -35,8 +30,7 @@ struct LCA
       }
     }
   }
-  int trace(int u, int v)
-  {
+  int trace(int u, int v) {
     if(depth[u] > depth[v]) swap(u, v);
     for(int i = 0; i < log_V; i++) {
       if((depth[v] - depth[u]) >> i & 1) v = parent[i][v];

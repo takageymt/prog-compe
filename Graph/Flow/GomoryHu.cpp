@@ -1,9 +1,9 @@
-struct edge {
-  int to, cap;
-  edge(){}
-  edge(int to, int cap):to(to),cap(cap){}
-};
 struct GomoryHuTree {
+  struct edge {
+    int to, cap;
+    edge(){}
+    edge(int to, int cap):to(to),cap(cap){}
+  };
   vector< vector<edge> > tree;
   GomoryHuTree(){}
   void build(const vector< vector<edge> >& graph) {

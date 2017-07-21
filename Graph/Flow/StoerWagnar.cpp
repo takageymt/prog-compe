@@ -1,14 +1,11 @@
 // Stoer Wagnar algorithm: global minimum cut
-struct StoerWagner
-{
+struct StoerWagner {
   vector< vector<int> > graph;
   StoerWagner(int sz):graph(sz, vector<int>(sz, 0)){}
-  void add_edge(int from, int to, int weight)
-  {
+  void add_edge(int from, int to, int weight) {
     graph[from][to] = graph[to][from] = weight;
   }
-  int global_min_cut()
-  {
+  int global_min_cut() {
     int res = inf;
     vector<int> idx((int)graph.size());
     for(int i = 0; i < (int)graph.size(); i++) idx[i] = i;

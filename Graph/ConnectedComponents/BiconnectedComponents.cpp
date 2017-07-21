@@ -1,6 +1,5 @@
 // Biconnected Components (lowlink)
-struct BICC
-{
+struct BICC {
   UnionFind uf;
   vector< vector<int> > graph, tree;
   vector<Pi> edges;
@@ -9,21 +8,19 @@ struct BICC
   vector<int> articulation;
   vector<Pi> bridge;
   BICC(int sz):uf(sz), graph(sz), vis(sz, false), ord(sz), low(sz), cmp(sz){}
-  void add_edge(int u, int v)
-  {
+  void add_edge(int u, int v) {
     graph[u].emplace_back(v);
     graph[v].emplace_back(u);
     edges.emplace_back(minmax(u, v));
   }
-  void dfs(int u, int p, int& k)
-  {
+  void dfs(int u, int p, int& k) {
     vis[u] = true;
-    
+
     ord[u] = low[u] = k++;
 
     bool is_articulation = false;
     int cnt = 0;
-    
+
     for(auto v : graph[u]) {
       if(!vis[v]) {
 	cnt++;
@@ -36,12 +33,11 @@ struct BICC
 	low[u] = min(low[u], ord[v]);
       }
     }
-    
+
     if(p == -1 && cnt > 1) is_articulation = true;
     if(is_articulation) articulation.push_back(u);
   }
-  void compose()
-  {
+  void compose() {
     int k = 0;
     dfs(0, -1, k);
 

@@ -1,21 +1,18 @@
 // Prim: minimum spanning tree
-struct Prim
-{
-  struct edge{
+struct Prim {
+  struct edge {
     int to, weight;
     edge(){}
     edge(int to, int weight):to(to), weight(weight){}
   };
-  
+
   vector< vector<edge> > graph;
   Prim(int sz):graph(sz){}
-  void add_edge(int u, int v, int weight)
-  {
+  void add_edge(int u, int v, int weight) {
     graph[u].push_back(edge(v, weight));
     graph[v].push_back(edge(u, weight));
   }
-  int build()
-  {
+  int build() {
     int total = 0;
     vector<bool> used(graph.size(), false);
     priority_queue< Pi, vector<Pi>, greater<Pi> > que;
