@@ -19,6 +19,7 @@ struct SSP {
       while(update) {
 	update = false;
 	for(int v = 0; v < (int)graph.size(); v++) {
+	  if(mincost[v] == inf) continue;
 	  for(int i = 0; i < (int)graph[v].size(); i++) {
 	    edge& e = graph[v][i];
 	    if(e.capacity > 0 && mincost[e.to] > mincost[v] + e.cost) {
@@ -28,17 +29,17 @@ struct SSP {
 	    }
 	  }
 	}
-	if(mincost[sink] == inf) return -1;
+      }
+      if(mincost[sink] == inf) return -1;
 
-	int d = f;
-	for(int v = sink; v != source; v = prevv[v]) d = min(d, graph[prevv[v]][preve[v]].capacity);
-	f -= d;
-	res += d * mincost[sink];
-	for(int v = sink; v != source; v = prevv[v]) {
-	  edge& e = graph[prevv[v]][preve[v]];
-	  e.capacity -= d;
-	  graph[e.to][e.rev].capacity += d;
-	}
+      int d = f;
+      for(int v = sink; v != source; v = prevv[v]) d = min(d, graph[prevv[v]][preve[v]].capacity);
+      f -= d;
+      res += d * mincost[sink];
+      for(int v = sink; v != source; v = prevv[v]) {
+	edge& e = graph[prevv[v]][preve[v]];
+	e.capacity -= d;
+	graph[e.to][e.rev].capacity += d;
       }
     }
     return res;
