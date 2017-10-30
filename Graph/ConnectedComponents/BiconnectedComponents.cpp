@@ -1,4 +1,4 @@
-namespace BICC {
+struct BICC {
   vint low, ord, cmp;
   set<int> apt;
   set<Pi> brge;
@@ -33,12 +33,8 @@ namespace BICC {
     if(p == -1 && cnt > 1) isapt = true;
     if(isapt) apt.insert(u);
   }
-  bool isarticulation(int u) {
-    return apt.count(u) > 0;
-  }
-  bool isbridge(int u, int v) {
-    return brge.count(minmax(u, v)) > 0;
-  }
+  bool isarticulation(int u) {return apt.count(u) > 0;}
+  bool isbridge(int u, int v) {return brge.count(minmax(u, v)) > 0;}
   void fillcmp(const Graph& g, int u, int k) {
     if(~cmp[u]) return;
     cmp[u] = k;
@@ -67,7 +63,5 @@ namespace BICC {
     }
     return t;
   }
-  int find(int u) {
-    return cmp[u];
-  }
+  int find(int u) {return cmp[u];}
 };

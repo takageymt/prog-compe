@@ -4,7 +4,7 @@ struct StarrySkyTree {
   int sz;
   StarrySkyTree(int n) {
     sz = 1; while(sz < n) sz *= 2;
-    data.resize(2*sz-1, inf);
+    data.resize(2*sz-1, 0);
     addend.resize(2*sz-1, 0);
   }
   void add(int a, int b, int x, int k, int l, int r) {

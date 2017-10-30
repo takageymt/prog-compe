@@ -11,9 +11,9 @@ using namespace std;
 template<class T1, class T2> void chmin(T1 &a, T2 b){if(a>b)a=b;}
 template<class T1, class T2> void chmax(T1 &a, T2 b){if(a<b)a=b;}
 
-typedef pair<int, int> Pi;
-typedef tuple<int, int, int> Ti;
-typedef vector<int> vint;
+using Pi = pair<int, int>;
+using Ti = tuple<int, int, int>;
+using vint = vector<int>;
 
 const int inf = 1LL << 55;
 const int mod = 1e9 + 7;
