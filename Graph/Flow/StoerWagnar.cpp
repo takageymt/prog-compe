@@ -24,8 +24,8 @@ struct StoerWagner {
 
       // Merge graph
       for(int j = 0; j < i; j++) {
-	graph[idx[u]][idx[i]] += graph[idx[v]][idx[i]];
-	graph[idx[i]][idx[u]] += graph[idx[i]][idx[v]];
+	graph[idx[u]][idx[j]] += graph[idx[v]][idx[j]];
+	graph[idx[j]][idx[u]] += graph[idx[j]][idx[v]];
       }
       idx.erase(idx.begin() + v);
 
