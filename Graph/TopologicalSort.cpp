@@ -30,3 +30,36 @@ struct TopologicalGraph {
     for(int i = 0; i < (int)order.size(); i++) cout << order[i] << endl;
   }
 };
+
+using Graph = vector<vint>;
+struct TopoSort {
+  TopoSort(){}
+  void bfs(const Graph& graph, vint& in, vint& used, vint& res, int s) {
+    queue<int> que;
+    que.push(s);
+    used[s] = 1;
+    while(!que.empty()) {
+      int u = que.front(); que.pop();
+      res.push_back(u);
+      for(int v : graph[u]) {
+	--in[v];
+	if(!in[v] && !used[v]) {
+	  que.push(v);
+	  used[v] = 1;
+	}
+      }
+    }
+  }
+  vint sort(const Graph& graph) {
+    vint res;
+    int V = graph.size();
+    vint in(V, 0), used(V, 0);
+    for(int u = 0; u < V; u++) {
+      for(int v : graph[u]) in[v]++;
+    }
+    for(int u = 0; u < V; u++) {
+      if(!in[u] && !used[u]) bfs(graph, in, used, res, u);
+    }
+    return res;
+  }
+};

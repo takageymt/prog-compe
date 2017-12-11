@@ -6,8 +6,8 @@ using ll = long long;
 
 struct MillerRabin {
   mt19937 mt;
-  const ll witnesses[3] = {2, 7, 61}; // n < 2^32
-  MillerRabin() {mt.seed(clock());}
+  const vector<ll> witnesses = {2, 7, 61}; // n < 2^32
+  MillerRabin() {mt.seed(1333);}
   ll modPow(ll x, ll n, ll mod) {
     ll res = 1;
     while(n > 0) {
@@ -18,13 +18,27 @@ struct MillerRabin {
     return res;
   }
   bool isPrime(ll n) {
-    if(n < 2) return false;
+    if(n == 2) return true;
+    if(n < 2 || !(n&1)) return false;
     ll d = n-1;
     ll s = 0;
-    while(d%2 == 0) d >>= 1, ++s;
-    for(auto&& a : witnesses) {
+    while(!(d&1)) d >>= 1, ++s;
+    /*
+      for(auto&& a : witnesses) {
       if(a == n) return true;
       if(modPow(a, d, n) == 1) continue;
+      bool flag = true;
+      for(ll r = 0; r < s; r++) {
+	if(modPow(a, d*(1ll<<r), n) == n-1) {
+	  flag = false;
+	  break;
+	}
+      }
+      if(flag) return false;
+    }
+    */
+    for(int i = 0; i < 2; i++) {
+      ll a = mt()%(n-4) + 2;
       bool flag = true;
       for(ll r = 0; r < s; r++) {
 	if(modPow(a, d*(1ll<<r), n) == n-1) {
@@ -42,7 +56,7 @@ struct Rho {
   mt19937 mt;
   MillerRabin mr;
   ll c;
-  Rho() {mt.seed(clock());}
+  Rho() {mt.seed(1333);}
   ll f(ll x, ll n) {return (x*x + c)%n;}
   ll get_divisor(ll n) {
     if(n == 4) return 2;
