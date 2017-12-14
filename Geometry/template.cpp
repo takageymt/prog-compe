@@ -139,7 +139,7 @@ vector<Vector> getNormalLineVector(Line l) {
   vector<Vector> vs;
   Vector v = l.t - l.s, p = v / abs(v);
   vs.emplace_back(-p.y, p.x);
-  vs.emplace_back(p.y, p.x);
+  vs.emplace_back(p.y, -p.x);
   return vs;
 }
 vector<Line> getTranslation(Line l, double d) {
