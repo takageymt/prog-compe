@@ -12,14 +12,13 @@ template<class T1, class T2> void chmin(T1 &a, T2 b){if(a>b)a=b;}
 template<class T1, class T2> void chmax(T1 &a, T2 b){if(a<b)a=b;}
 
 using Pi = pair<int, int>;
-using Ti = tuple<int, int, int>;
+using Tapris = tuple<int, int, int>;
 using vint = vector<int>;
 
 const int inf = 1LL << 55;
 const int mod = 1e9 + 7;
 
-signed main()
-{
+signed main() {
   cin.tie(0);
   ios_base::sync_with_stdio(0);
   cout << fixed << setprecision(12);

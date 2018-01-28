@@ -1,46 +1,53 @@
 // Centroid Decomposition
-struct CentroidDecomposition {
-  using Pi = pair<int, int>;
-  vector< vector<int> > tree, decomposed_tree;
-  vector<bool> centroid;
-  vector<int> subtree_size;
-  CentroidDecomposition(int sz):tree(sz), decomposed_tree(sz), centroid(sz, false), subtree_size(sz, -1){}
-  void add_edge(int u, int v) {
-    tree[u].push_back(v);
-    tree[v].push_back(u);
-  }
-  int compute_subtree_size(int u, int parent) {
-    subtree_size[u] = 1;
-    for(int v : tree[u]) {
-      if(v == p || ~subtree_size[v]) continue;
-      subtree_size[u] += compute_subtree_size(v, u);
+vint getCentroid(const Graph& graph, const vector<bool>& dead, int root) {
+  int alive_cnt = 0;
+  map<int, int> alive_id;
+  function<void(int, int)> find_alive = [&](int u, int p) {
+    alive_id[u] = alive_cnt++;
+    for(auto&& v : graph[u]) {
+      if(v == p || dead[v]) continue;
+      find_alive(v, u);
     }
-    return subtree_size[u];
-  }
-  Pi search_centroid(int u, int parent, int t) {
-    Pi res = Pi(inf, -1);
-    int s = 1, m = 0;
-    for(int v : tree[u]) {
-      if(v == p || centroid[v]) continue;
-      res = min(res, search_centroid(v, u, t));
-      m = max(m, subtree_size[v]);
-      s += subtree_size[v];
+  };
+  find_alive(root, -1);
+  vint centroid;
+  vint sz(alive_cnt);
+  function<void(int, int)> dfs = [&](int u, int p) {
+    int x = alive_id[u];
+    sz[x] = 1;
+    bool is_centroid = true;
+    for(auto&& v : graph[u]) {
+      if(v == p || dead[v]) continue;
+      dfs(v, u);
+      int y = alive_id[v];
+      sz[x] += sz[y];
+      if(sz[x] > alive_cnt/2) is_centroid = false;
     }
-    m = max(m, t - s);
-    res = min(res, Pi(m, u));
-    return res;
-  }
-  void decompose(int u) {
-    compute_subtree_size(u, -1);
-    int center = seach_centroid(u, -1, subtree_size[u]).second;
-    centroid[center] = true;
+    if(alive_cnt-sz[x] > alive_cnt/2) is_centroid = false;
+    if(is_centroid) centroid.push_back(u);
+  };
+  assert(centroid.size() == 1 ||  centroid.size() == 2);
+  return centroid;
+}
 
-    for(int v : tree[center]) {
-      if(centroid[v]) continue;
-      decompose(v);
-      decomposed_tree[center].push_back(v);
+void CentroidDecomposition(const Graph& graph, int root = 0) {
+  int n = graph.size();
+  vector<bool> dead(n, false);
+  function<void(int)> rec = [&](int u) {
+    auto centroid = getCentroid(graph, dead, u);
+    int c = centroid[0];
+    dead[c] = true;
+
+    // A. compute something within each subtree alone (without the centroid)
+    for(auto&& v : graph[c]) {
+      if(dead[v]) continue;
+      rec(v);
     }
 
-    centroid[center] = false;
-  }
-};
+    // B. compute something with the centroid
+    // ...your code here...
+
+    dead[c] = false;
+  };
+  rec(root);
+}

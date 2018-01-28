@@ -345,7 +345,7 @@ Graph segmentArrangement(vector<Segment>& segs, vector<Point>& ps) {
     vector< pair<double, int> > ls;
     for(int j = 0; j < (int)ps.size(); j++) {
       if(intersect(segs[i], ps[j])) {
-	ls.emplace_back(getDistanceSP(segs[i], ps[j]), j);
+	ls.emplace_back(getDistance(segs[i].s, ps[j]), j);
       }
     }
     sort(ls.begin(), ls.end());
