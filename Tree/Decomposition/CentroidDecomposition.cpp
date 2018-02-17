@@ -1,5 +1,10 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+using Graph = vector<vector<int> >;
 // Centroid Decomposition
-vint getCentroid(const Graph& graph, const vector<bool>& dead, int root) {
+vector<int> getCentroid(const Graph& graph, const vector<bool>& dead, int root) {
   int alive_cnt = 0;
   map<int, int> alive_id;
   function<void(int, int)> find_alive = [&](int u, int p) {
@@ -10,8 +15,8 @@ vint getCentroid(const Graph& graph, const vector<bool>& dead, int root) {
     }
   };
   find_alive(root, -1);
-  vint centroid;
-  vint sz(alive_cnt);
+  vector<int> centroid;
+  vector<int> sz(alive_cnt);
   function<void(int, int)> dfs = [&](int u, int p) {
     int x = alive_id[u];
     sz[x] = 1;
@@ -50,4 +55,27 @@ void CentroidDecomposition(const Graph& graph, int root = 0) {
     dead[c] = false;
   };
   rec(root);
+}
+
+// 重心を一つ求める(重心分解による分割統治用)
+int OneCentroid(const Graph& graph, vector<int>& dead, int root = 0) {
+  static vector<int> sz(graph.size());
+  function<void(int, int)> get_sz = [&](int u, int p) {
+    sz[u] = 1;
+    for(int v : graph[u]) {
+      if(v == p || dead[v]) continue;
+      get_sz(v, u);
+      sz[u] += sz[v];
+    }
+  };
+  get_sz(root, -1);
+  int n = sz[root];
+  function<int(int, int)> dfs = [&](int u, int p) {
+    for(int v : graph[u]) {
+      if(v == p || dead[v]) continue;
+      if(sz[v] > n / 2) return dfs(v, u);
+    }
+    return u;
+  };
+  return dfs(root, -1);
 }
