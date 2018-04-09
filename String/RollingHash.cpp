@@ -1,38 +1,35 @@
-// Dual Rolling Hash
-struct RollingHash {
-  using int_type = unsigned long long;
-  using hash_type = vector<int_type>;
-  int_type base, mod[2];
-  vector<int_type> hashed[2], power[2];
-  RollingHash() {
-    base = 9973LL, mod[0] = 999999937LL, mod[1] = 1000000007LL;
-  }
-  void init(const string& s) {
+
+struct RollHash {
+  using ull = unsigned long long;
+  using hash_t = pair<ull, ull>;
+  ull base, mod[2];
+  vector<ull> ha[2], pw[2];
+  RollHash(const string& s) {
+    base = 9973ull;
+    mod[0] = 999999937ull;
+    mod[1] = 1000000007ull;
+
     int sz = s.size();
-
-    for(int i = 0; i < 2; i++) {
-      hashed[i].resize(sz + 1, 0);
-      power[i].resize(sz + 1, 0);
-
-      power[i][0] = 1;
-      for(int j = 0; j < sz; j++) {
-	power[i][j+1] = power[i][j] * base % mod[i];
-	hashed[i][j+1] = (hashed[i][j] + s[j]) * base % mod[i];
+    for(int i = 0; i < 2; ++i) {
+      ha[i].resize(sz+1, 0);
+      pw[i].resize(sz+1, 0);
+      pw[i][0] = 1;
+      for(int j = 0; j < sz; ++j) {
+	pw[i][j+1] = pw[i][j]*base%mod[i];
+	ha[i][j+1] = (ha[i][j]*base+s[j])%mod[i];
       }
     }
   }
-  hash_type get(int l, int r) {
-    hash_type res(2);
-    for(int i = 0; i < 2; i++) {
-      res[i] = ((hashed[i][r] - hashed[i][l] * power[i][r-l]) % mod[i] + mod[i]) % mod[i];
-    }
+  hash_t get(int l, int r) {
+    hash_t res;
+    res.first = (ha[0][r]-ha[0][l]*pw[0][r-l]%mod[0]+mod[0])%mod[0];
+    res.second = (ha[1][r]-ha[1][l]*pw[1][r-l]%mod[1]+mod[1])%mod[1];
     return res;
   }
-  hash_type concat(hash_type hash1, hash_type hash2, int hash2_len) {
-    hash_type res(2);
-    for(int i = 0; i < 2; i++) {
-      res[i] = (hash1[i] * power[i][hash2_len] + hash2[i]) % mod[i];
-    }
+  hash_t concat(hash_t hash1, hash_t hash2, int hash2_len) {
+    hash_t res;
+    res.first = (hash1.first * pw[0][hash2_len] + hash2.first) % mod[0];
+    res.second = (hash1.second * pw[1][hash2_len] + hash2.second) % mod[1];
     return res;
   }
 };
