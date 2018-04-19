@@ -65,7 +65,7 @@ struct RUSegmentTree {
     update(a, b, x, 2*k+2, (l+r)/2, r);
     data[k] = OS::op(data[2*k+1], data[2*k+2]);
   }
-  void update(int a, int b, const T& x) {
+  void update(int a, int b, const M& x) {
     update(a, b, x, 0, 0, sz);
   }
   T query(int a, int b, int k, int l, int r) {

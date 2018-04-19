@@ -1,34 +1,44 @@
-const int sqrtN = 512;
-struct RSQ {
-  int N, K;
-  vector<int> data;
-  vector<int> bucketSum;
-  RSQ(int n) : N(n) {
-    K = (N + sqrtN - 1) / sqrtN;
-    data.resize(K*sqrtN, 0);
-    bucketSum.resize(K, 0);
-  }
-  void add(int x, int y) {
-    int k = x / sqrtN;
-    data[x] += y;
-    int sum = 0;
-    for(int k = k*sqrtN; i < (k+1)*sqrtN; i++) {
-      sum += data[i];
-    }
+#include <bits/stdc++.h>
+
+using namespace std;
+
+using ll = long long;
+
+int main() {
+  const int sqrtN = 512;
+  int n, q;
+  cin >> n >> q;
+  int bucket_sz = (n+sqrtN-1)/sqrtN;
+  vector<ll> a(n, 0);
+  vector<ll> bucketSum(bucket_sz, 0);
+  auto update = [&](int k, int x) {
+    a[k] += x;
+    k /= sqrtN;
+    int l = k*sqrtN, r = (k+1)*sqrtN;
+    ll sum = 0;
+    for(int i = l; i < min(n, r); ++i) sum += a[i];
     bucketSum[k] = sum;
-  }
-  int getSum(int x, int y) {
-    int sum = 0;
-    for(int k = 0; k < K; k++) {
-      int l = k*sqrtN, r = (k+1)*sqrtN;
-      if(r <= x || y <= l) continue;
-      if(x <= l && r <= y) sum += bucketSum[k];
+  };
+  auto query = [&](int s, int t)->ll{
+    ll res = 0;
+    for(int i = 0; i < bucket_sz; ++i) {
+      int l = i*sqrtN, r = (i+1)*sqrtN;
+      if(r <= s || t <= l) continue;
+      if(s <= l && r <= t) res += bucketSum[i];
       else {
-	for(int i = max(x, l); i < min(y, r); i++) {
-	  sum += data[i];
+	for(int j = max(s, l); j < min(t, r); ++j) {
+	  res += a[j];
 	}
       }
     }
-    return sum;
+    return res;
+  };
+  while(q--) {
+    ll t, x, y;
+    cin >> t >> x >> y;
+    if(t == 0) update(x-1, y);
+    else cout << query(x-1, y) << endl;
   }
-};
+
+  return 0;
+}

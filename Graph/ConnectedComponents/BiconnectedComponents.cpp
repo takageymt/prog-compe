@@ -1,66 +1,74 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+using Graph = vector<vector<int> >;
+
 struct BICC {
-  vint low, ord, cmp;
-  set<int> apt;
-  set<Pi> brge;
-  int root;
+  vector<int> low, ord, cmp;
+  vector<bool> isapt;
   void init(const Graph& g) {
     int n = g.size();
     low.clear();
-    low.resize(n);
+    low.resize(n, -1);
     ord.clear();
-    ord.resize(n);
+    ord.resize(n, -1);
     cmp.clear();
     cmp.resize(n, -1);
-    root = 0;
-    while(root < n-1 && g[root].size() == 1) root++;
+    isapt.clear();
+    isapt.resize(n, false);
   }
-  void dfs(const Graph& g, int u, int p, int& k, vint& vis) {
-    vis[u] = 1;
+  void dfs(const Graph& g, int u, int p) {
+    static int k = 0;
     ord[u] = low[u] = k++;
-    bool isapt = false;
     int cnt = 0;
     for(auto&& v : g[u]) {
-      if(!vis[v]) {
+      if(ord[v] == -1) {
 	cnt++;
-	dfs(g, v, u, k, vis);
+	dfs(g, v, u);
 	low[u] = min(low[u], low[v]);
-	if(~p && ord[u] <= low[v]) isapt = true;
-	if(ord[u] < low[v]) brge.insert(minmax(u, v));
+	if(~p && ord[u] <= low[v]) isapt[u] = true;
       } else if(v != p) {
 	low[u] = min(low[u], ord[v]);
       }
     }
-    if(p == -1 && cnt > 1) isapt = true;
-    if(isapt) apt.insert(u);
+    if(p == -1 && cnt > 1) isapt[u] = true;
   }
-  bool isarticulation(int u) {return apt.count(u) > 0;}
-  bool isbridge(int u, int v) {return brge.count(minmax(u, v)) > 0;}
+  bool isarticulation(int u) {return isapt[u];}
+  bool isbridge(int u, int v) {
+    if(ord[u] > ord[v]) swap(u, v);
+    return ord[u] < low[v];
+  }
   void fillcmp(const Graph& g, int u, int k) {
-    if(~cmp[u]) return;
     cmp[u] = k;
     for(auto&& v : g[u]) {
-      if(!isbridge(u, v)) fillcmp(g, v, k);
+      if(!isbridge(u, v) && cmp[u] == -1) fillcmp(g, v, k);
     }
   }
   Graph build(const Graph& g) {
     init(g);
-    int n = g.size(), k = 0;
-    vint vis(n, 0);
-    dfs(g, root, -1, k, vis);
+    int n = g.size();
+    for(int u = 0; u < n; ++u) {
+      if(ord[u] == -1) dfs(g, u, -1);
+    }
     int sz = 0;
-    fillcmp(g, root, sz++);
-    for(auto&& e : brge) {
-      int u = e.first, v = e.second;
+    for(int u = 0; u < n; ++u) {
       if(cmp[u] == -1) fillcmp(g, u, sz++);
-      if(cmp[v] == -1) fillcmp(g, v, sz++);
     }
     Graph t(sz);
-    for(auto&& e : brge) {
-      int u = e.first, v = e.second;
-      assert(~cmp[u] && ~cmp[v]);
-      t[cmp[u]].push_back(cmp[v]);
-      t[cmp[v]].push_back(cmp[u]);
+    set<pair<int, int> > st;
+    for(int u = 0; u < n; ++u) {
+      for(auto&& v : g[u]) {
+	int x = cmp[u], y = cmp[v];
+	if(x != y && !st.count(make_pair(x, y))) {
+	  t[x].push_back(y);
+	  t[y].push_back(x);
+	  st.emplace(x, y);
+	  st.emplace(y, x);
+	}
+      }
     }
+
     return t;
   }
   int find(int u) {return cmp[u];}

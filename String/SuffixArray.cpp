@@ -1,11 +1,9 @@
 // Suffix Array
 struct SuffixArray {
-  int n, k;
-  vector<int> sa, rank, temp;
+  int n;
+  vector<int> sa, rank, temp, lcp;
   string s;
-  SuffixArray(const string& str) {
-    s = str;
-    n = (int)str.size();
+  SuffixArray(const string& str):s(str), n(str.size()) {
     sa.resize(n + 1);
     rank.resize(n + 1);
     temp.resize(n + 1);
@@ -17,7 +15,7 @@ struct SuffixArray {
     }
 
     // build Suffix Array
-    for(k = 1; k <= n; k *= 2) {
+    for(int k = 1; k <= n; k *= 2) {
 
       const auto comp = [&](int i, int j) -> bool {
 	if(rank[i] != rank[j]) return rank[i] < rank[j];
@@ -38,6 +36,18 @@ struct SuffixArray {
       for(int i = 0; i <= n; i++) {
 	rank[i] = temp[i];
       }
+    }
+  }
+  void build_lcp() {
+    int h = 0;
+    lcp[0] = 0;
+    for(int i = 0; i < n; ++i) {
+      int j = sa[rank[i]-1]; // sa[rank[i]] == i
+      if(h > 0) --h;
+      for(; j+h < n && i+h < n; ++h) {
+	if(s[j+h] != s[i+h]) break;
+      }
+      lcp[rank[i]-1] = h;
     }
   }
   bool contain(const string& t) {

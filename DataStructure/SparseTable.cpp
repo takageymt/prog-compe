@@ -21,7 +21,7 @@ struct SparseTable {
       for(int i = 0; i+(1<<k) <= N; i++) {
 	int s = table[i][k-1];
 	int t = table[i+(1<<(k-1))][k-1];
-	table[i][k] = (data[s] < data[t] ? s : t);
+	table[i][k] = (data[s] <= data[t] ? s : t);
       }
     }
   }
@@ -29,7 +29,7 @@ struct SparseTable {
     int len = b - a;
     int k = LOG[len];
     int s = data[table[a][k]];
-    int t = data[table[b-(1<<k)][k]];
-    return (data[s] < data[t] ? s : t);
+    int t = data[table[b-(1<<k)+1][k]];
+    return (data[s] <= data[t] ? s : t);
   }
 };
