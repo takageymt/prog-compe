@@ -4,8 +4,8 @@ struct ChuLiu_Edmonds {
     edge(){}
     edge(int to, int cost):to(to), cost(cost){}
   };
-  typedef vector< vector<edge> > Graph;
-  Graph graph;
+  typedef vector< vector<edge> > WeightedGraph;
+  WeightedGraph graph;
   vector<int> indeg;
 
   //const int inf = 1<<25;
@@ -22,7 +22,7 @@ struct ChuLiu_Edmonds {
     }
     return -1;
   }
-  int minimum_cost_arborescence(Graph &g, int root) {
+  int minimum_cost_arborescence(WeightedGraph &g, int root) {
     int N = g.size();
 
     vector<int> into(N, -1), mincost(N, inf); // 頂点uに入るコストが最小の入る辺のfromとそのコスト
@@ -47,7 +47,7 @@ struct ChuLiu_Edmonds {
     int scc_sz = scc.build();
     if((int)scc_sz == N) return res;
 
-    Graph reduce_g(scc_sz);
+    WeightedGraph reduce_g(scc_sz);
     for(int u = 0; u < N; u++) {
       for(edge& e : g[u]) {
 	if(scc.cmp[u] == scc.cmp[e.to]) continue;
