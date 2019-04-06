@@ -50,8 +50,8 @@ Num Simplex(const Mat& A, const Vec& b, const Vec& c) {
       if(i == r || abs(tab[i][s]) <= eps) continue;
       for(int j = 0; j <= n; ++j) {
 	if(j != s) tab[i][j] += tab[r][j]*tab[i][s];
-	tab[i][s] *= tab[r][s];
       }
+      tab[i][s] *= tab[r][s];
     }
   }
   return tab[m][n];
